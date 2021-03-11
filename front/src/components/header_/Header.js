@@ -5,7 +5,7 @@ function Header(){
         // siempre debo solo de retornar un elemento "HTML" entre comillas porque esto  jsx 
         <div>
           <h1>
-              SYSTEM MONITOR
+           SYSTEM MONITOR
           </h1>  
         </div>
     )

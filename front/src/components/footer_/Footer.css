@@ -1,3 +1,17 @@
+
 h2{
-    color: darkgoldenrod;
+    color:white;
+    align-items: center;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: smaller;
+}
+h2:hover{
+color: rgb(42, 165, 79);
+transition-duration: 3s;
+}
+
+div{
+    background-color: black;
 }
