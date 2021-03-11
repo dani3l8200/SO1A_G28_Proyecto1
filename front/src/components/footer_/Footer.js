@@ -1,5 +1,5 @@
-import react from "react";
 
+import "./Footer.css"
 export default function Footer(){ // los componentes tiene que comenzar con mayuscula
     return (
         <>
