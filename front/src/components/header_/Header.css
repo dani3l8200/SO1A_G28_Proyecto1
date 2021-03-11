@@ -1,0 +1,17 @@
+
+h1{
+    color:whitesmoke;
+    align-items: center;
+    text-align: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+h1:hover{
+color: rgb(20, 100, 204);
+background-color: rgb(22, 21, 21);
+transition-duration: 3s;
+}
+
+div{
+    background-color: black;
+}
