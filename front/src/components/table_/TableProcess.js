@@ -1,9 +1,11 @@
 import Table from 'react-bootstrap/Table';
+import Zoom from 'react-reveal/Zoom';
+
 
 export default function TableProcess(){
     return(
         // siempre debo solo de retornar un elemento "HTML" entre comillas porque esto  jsx 
-        <>
+        <Zoom>
 <Table responsive variant="dark">
   <thead >
     <tr>
@@ -35,8 +37,10 @@ export default function TableProcess(){
       ))}
     </tr>
   </tbody>
-  <h1 className="my-4"></h1>
+  <h1 className="my-4">
+
+  </h1>
 </Table>
-        </>
+        </Zoom>
     )
 }

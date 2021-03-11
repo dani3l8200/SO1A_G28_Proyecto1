@@ -15,3 +15,8 @@ transition-duration: 3s;
 div{
     background-color: black;
 }
+
+
+.animate__animated.animate__bounce {
+    --animate-duration: 2s;
+  }
