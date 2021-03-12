@@ -8,10 +8,14 @@ h1{
 }
 h1:hover{
 color: rgb(20, 100, 204);
-background-color: rgb(22, 21, 21);
 transition-duration: 3s;
 }
 
 div{
     background-color: black;
 }
+
+
+.animate__animated.animate__bounce {
+    --animate-duration: 2s;
+  }
