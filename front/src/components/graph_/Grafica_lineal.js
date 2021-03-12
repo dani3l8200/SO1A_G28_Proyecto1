@@ -10,7 +10,7 @@ class SplineAreaChart extends Component {
 		const options = {
 			animationEnabled: true,
 			title: {
-				text: "MEDICIONES DE RAM"
+				text: ""
 			},
 			axisY: {
 				title: "MEDICION Y",
@@ -40,7 +40,7 @@ class SplineAreaChart extends Component {
 		
 		return (
 		<div>
-			<h1>React Spline Area Chart</h1>
+			<h1>TITULO</h1>
 			<CanvasJSChart options = {options} 
 				/* onRef={ref => this.chart = ref} */
 			/>
