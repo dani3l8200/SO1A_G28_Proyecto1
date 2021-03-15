@@ -1,3 +1,9 @@
+Utilizacion de React
+
+descargamos las dependencias:
+### `npm install`
+
+Iniciamos el server:
 ### `npm start`
 
 Runs the app in the development mode.\
