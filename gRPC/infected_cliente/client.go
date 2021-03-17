@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"gRPC/infected/infectedpb"
+	"infectedclient/infectedpb"
 	"io/ioutil"
 	"net/http"
 
@@ -53,7 +53,7 @@ func conexion(w http.ResponseWriter, r *http.Request) {
 	// log.Infof("Received the following text to categorize: %s", infectedInput)
 
 	fmt.Println("Hello I'm a client")
-	cc, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	cc, err := grpc.Dial("server:50051", grpc.WithInsecure())
 
 	if err != nil {
 		log.Fatalf("Could not connect: %v", err)
