@@ -6,16 +6,46 @@ import (
 	"runtime"
 	"time"
 	"github.com/nats-io/nats.go"
-	//"fmt"
 	"encoding/json"
+	"fmt"
+	"strings"
+	"net/http" //para escuchar peticiones HTTP	
 )
+type Mensaje struct{
+	Name string `json:"name,omitempty"` //para ser mas explicito de lo que espero recibir
+	Location string `json:"location,omitempty"` // nombre como lo espero ,  caracteristica no nulo
+	Age	int 	`json:"age,omitempty"`
+	Infectedtype string `json:"infectedtype,omitempty"`
+	State string `json:"state,omitempty"`
+}
+
+
 
 func ImprimirMensaje(m *nats.Msg, i int) {
-
 cadena := string(m.Data)
+var msg Mensaje
+err := json.Unmarshal(m.Data, &msg)
+
+if err != nil {
+	fmt.Printf("Error decodificando: %v\n", err)
+} else {
+	// de aca puedo sacar los datos en limpio 	
+	//fmt.Printf("NAME: %s\n", msg.Name)
+	//fmt.Printf("Location: %s\n", msg.Location)
+	//fmt.Printf("Age: %d\n", msg.Age)
+	//fmt.Printf("Infectedtype: %s\n", msg.Infectedtype)
+	//fmt.Printf("State: %s\n", msg.State)
+	// lo mando
+	datos := strings.NewReader(string(m.Data))
+    res, err := http.Post("http://localhost:3000/mensajeria", "application/json; charset=UTF-8", datos)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer res.Body.Close()
+}
+
 obj_msg_sender, _ := json.Marshal(cadena)
-println(string(obj_msg_sender))
-log.Printf("[#%d] Received on [%s]: '%s'", i, m.Subject, string(obj_msg_sender))
+log.Printf("(%d)[%s]:'%s'", i, m.Subject, string(obj_msg_sender))
 }
 
 func main() {
@@ -25,12 +55,11 @@ func main() {
 	log.SetFlags(0)
 	flag.Parse()
 
-	// Connect Options.
 	opciones := []nats.Option{nats.Name("SUBSCRIBER DE NATS")}
 	opciones = establecerOptiones(opciones)
 
 
-	// Connect to NATS
+	// CONECTO CON NATS
 	nc, err := nats.Connect(*urls, opciones...)
 	if err != nil {
 		log.Fatal(err)
@@ -57,6 +86,13 @@ func main() {
 
 	runtime.Goexit()
 }
+
+
+
+
+
+
+
 
 func establecerOptiones(opciones []nats.Option) []nats.Option {
 	totalEspera := 10 * time.Minute
