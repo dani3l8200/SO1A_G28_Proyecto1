@@ -1,0 +1,20 @@
+version: "3"
+
+services: 
+    server:
+      container_name: server
+      image: server:v1
+      restart: always
+      build: ./infected_server
+      volumes: 
+        - ./infected_server/go/src/app
+    client:
+      container_name: client
+      image: client:v1
+      restart: always
+      build: ./infected_cliente
+      ports: 
+        - "10000:10000"
+      volumes: 
+        - ./infected_cliente/go/src/app
+  

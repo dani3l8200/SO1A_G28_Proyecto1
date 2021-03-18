@@ -1,7 +1,7 @@
 import json
 from numpy import random
-from locust import HttpUser, task, between
-
+from locust import task, between
+from locust.contrib.fasthttp import FastHttpUser
 debug=True
 def printDebug(msg):
     
@@ -38,7 +38,7 @@ class Reader():
         except Exception as e:
             print(f'Hubo un error {e}')
   
-class MessageTraffic(HttpUser):
+class MessageTraffic(FastHttpUser):
     # Tiempo de espera entre peticiones
     # En este caso, esperara un tiempo de 0.1 segundos a 0.5 segundos (inclusivo) 
     #  entre cada llamada HTTP
@@ -70,7 +70,7 @@ class MessageTraffic(HttpUser):
             printDebug (data_to_send)
         
             # Enviar los datos que acabamos de obtener
-            self.client.post("/", json=random_data)
+            self.client.post("/", data=data_to_send)
             
         # En este segmento paramos la ejecución del proceso de creación de tráfico
         else:
