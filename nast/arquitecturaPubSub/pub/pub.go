@@ -1,62 +1,43 @@
 package main // indpenediente al subcriber
 
 import (
-	"flag"
 	"encoding/json"
 	"github.com/nats-io/nats.go"
 	"fmt"
-	"os"
-	"log"
+
+	"net/http" //para escuchar peticiones HTTP	
 )
 
-
-
-func usage() {
-	log.Printf("Usage: nats-pub [-s server] [-creds file] <subject> <msg>\n")
-	flag.PrintDefaults()
-}
-
-func showUsageAndExit(exitcode int) {
-	usage()
-	os.Exit(exitcode)
+type Mensaje struct{
+	Name string `json:"name,omitempty"` //para ser mas explicito de lo que espero recibir
+	Location string `json:"location,omitempty"` // nombre como lo espero ,  caracteristica no nulo
+	Age	int 	`json:"age,omitempty"`
+	Infectedtype string `json:"infectedtype,omitempty"`
+	State string `json:"state,omitempty"`
 }
 
 func main() {
-	publicar()
+	http.HandleFunc("/",publicar_por_HTTP)
+	println("escuchando en el puerto 5000")
+	http.ListenAndServe(":5000",nil)
 }
 
-func publicar( ) {
-	var urls = flag.String("s", nats.DefaultURL, "PUBLISH")
-	log.SetFlags(0)
-	flag.Parse()
-	args := flag.Args() // por el momento
-	if len(args) != 1 {
-		showUsageAndExit(1) 
+func publicar_por_HTTP(res http.ResponseWriter , req * http.Request){
+	switch req.Method {
+	case "POST":
+			var mensaje Mensaje
+			_ = json.NewDecoder(req.Body).Decode(&mensaje)			
+			data, _ := json.Marshal(mensaje) // LO CODIFICA A JSON 
+			json_byte :=[]byte(string(data))
+			publicar(json_byte)
 	}
-	
-	opciones := []nats.Option{nats.Name("SERVER PUBLISHER DE NATS")}//conexion
-	nc, err := nats.Connect(*urls, opciones...) // conexion al server de nats 
-	if err != nil {
-		log.Fatal(err)
-	}
+}
+
+func publicar(mensaje []byte){
+	nc,_:=nats.Connect(nats.DefaultURL)
 	defer nc.Close()
 
-	CanalEscucha := "SOPES1"
-	msg := []byte(args[0])// ACA MANDARIA EL JSON
-	type Auto struct {
-	ID int
-	Modelo string
-	}
-	var auto Auto
-	data, _ := json.Marshal(auto) // LO CODIFICA A JSON 
-	fmt.Println(msg)
-	fmt.Println(string(data))
-	json_byte :=[]byte(string(data))
-	nc.Publish(CanalEscucha, json_byte)
-	nc.Flush()
-	if err := nc.LastError(); err != nil {
-		log.Fatal(err)
-	} else {
-		log.Printf("PUBLICANDO EL MSG DE(-%s-) : '%s'\n", CanalEscucha, msg)
-	}
+	 nc.Publish("SOPES1", mensaje)
+	 fmt.Println("MESAJE ENVIADO:  " , string(mensaje))
+	 nc.Flush()
 }
