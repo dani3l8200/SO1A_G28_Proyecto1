@@ -11,6 +11,12 @@ import (
 	"strings"
 	"net/http" //para escuchar peticiones HTTP	
 )
+
+const (
+	URL_LISTEN = "nats://nats-server:4222"
+)
+
+
 type Mensaje struct{
 	Name string `json:"name,omitempty"` //para ser mas explicito de lo que espero recibir
 	Location string `json:"location,omitempty"` // nombre como lo espero ,  caracteristica no nulo
@@ -49,7 +55,7 @@ log.Printf("(%d)[%s]:'%s'", i, m.Subject, string(obj_msg_sender))
 }
 
 func main() {
-	var urls = flag.String("s", nats.DefaultURL, "URL DE NATS")
+	var urls = flag.String("s", URL_LISTEN, "URL DE NATS")
 	var showTime = flag.Bool("t", false, "FECHA , HORA Y ZONA")
 
 	log.SetFlags(0)
@@ -68,11 +74,15 @@ func main() {
 
 	CanalEscucha, i := "SOPES1", 0
 
-	nc.Subscribe(CanalEscucha, func(msg *nats.Msg) {
+	susc, err := nc.Subscribe(CanalEscucha, func(msg *nats.Msg) {
 		i += 1
 		ImprimirMensaje(msg, i)
 		// RECIBO EL WHATSAPASO :V
 	})
+	if err != nil{ 
+		log.Fatal(err)
+	}
+	fmt.Println(&susc)
 	nc.Flush()// creo que limpia la cola
 
 	if err := nc.LastError(); err != nil {
@@ -86,12 +96,6 @@ func main() {
 
 	runtime.Goexit()
 }
-
-
-
-
-
-
 
 
 func establecerOptiones(opciones []nats.Option) []nats.Option {

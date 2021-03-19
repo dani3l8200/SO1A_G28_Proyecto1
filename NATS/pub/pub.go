@@ -8,6 +8,10 @@ import (
 	"net/http" //para escuchar peticiones HTTP	
 )
 
+const (
+	URL_LISTEN = "nats://nats-server:4222"
+)
+
 type Mensaje struct{
 	Name string `json:"name,omitempty"` //para ser mas explicito de lo que espero recibir
 	Location string `json:"location,omitempty"` // nombre como lo espero ,  caracteristica no nulo
@@ -34,7 +38,7 @@ func publicar_por_HTTP(res http.ResponseWriter , req * http.Request){
 }
 
 func publicar(mensaje []byte){
-	nc,_:=nats.Connect(nats.DefaultURL)
+	nc,_:=nats.Connect(URL_LISTEN)
 	defer nc.Close()
 
 	 nc.Publish("SOPES1", mensaje)
