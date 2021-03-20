@@ -7,7 +7,9 @@ services:
       restart: always
       build: ./infected_server
       volumes: 
-        - ./infected_server/go/src/app
+        - ./infected_server:/go/src/app
+      networks: 
+        - gRPC
     client:
       container_name: client
       image: client:v1
@@ -16,5 +18,9 @@ services:
       ports: 
         - "10000:10000"
       volumes: 
-        - ./infected_cliente/go/src/app
-  
+        - ./infected_cliente:/go/src/app
+      networks: 
+        - gRPC
+networks: 
+  gRPC:
+    driver: "bridge"
