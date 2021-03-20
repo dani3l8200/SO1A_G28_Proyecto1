@@ -9,14 +9,18 @@ services:
       ports: 
         - "4222:4222"
       volumes:
-        - ./server/go/src/nats
+        - ./server:/go/src/nats
+      networks: 
+        - NATS
     nats-sub:
       container_name: nats-sub
       image: nats-sub:v1
       restart: always
       build: ./sub
       volumes: 
-        - ./sub/go/src/nats
+        - ./sub:/go/src/nats
+      networks: 
+        - NATS
     nats-pub:
       container_name: nats-pub
       image: nats-pub:v1
@@ -25,5 +29,10 @@ services:
       ports:
         - "5000:5000"
       volumes: 
-        - ./pub/go/src/nats
-  
+        - ./pub:/go/src/nats
+      networks: 
+        - NATS
+
+networks: 
+  NATS:
+    driver: "bridge"

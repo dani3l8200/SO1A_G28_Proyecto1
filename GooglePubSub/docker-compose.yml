@@ -1,0 +1,26 @@
+version: "3"
+
+services: 
+    google-pub:
+      container_name: google-pub
+      image: google-pub:v1
+      restart: always
+      build: ./Pub
+      ports: 
+      - "6000:6000"
+      volumes: 
+        - ./Pub:/go/src/google-pub-sub
+      networks: 
+        - Google-Pub-Sub
+    google-sub:
+      container_name: google-sub
+      image: google-sub:v1
+      restart: always
+      build: ./Sub
+      volumes: 
+        - ./Sub:/go/src/google-pub-sub
+      networks: 
+        - Google-Pub-Sub
+networks: 
+  Google-Pub-Sub:
+    driver: "bridge"
