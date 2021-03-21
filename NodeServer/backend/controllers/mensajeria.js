@@ -22,4 +22,4 @@ mensajeSchema.find(function (err, mensajitos) {
     console.log(mensajitos)
 })
 
-module.exports = controller_mensajeria;c
+module.exports = controller_mensajeria;

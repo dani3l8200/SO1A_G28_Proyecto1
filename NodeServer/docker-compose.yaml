@@ -11,8 +11,8 @@ services:
       - mongo
     volumes: 
       - ./backend:/app/
-      - /proc/cpumod:/app/cpumod
-      - /proc/ranmod:/app/cpumod
+      - ./proc/cpumod:/app/cpumod
+      - ./proc/ranmod:/app/ranmod
     networks: 
       - REST-API
   mongo:
@@ -23,3 +23,8 @@ services:
       - ./data:/data/db
     ports: 
       - "27017:27017"
+    networks:
+      - REST-API
+networks: 
+  REST-API:
+    driver: "bridge"

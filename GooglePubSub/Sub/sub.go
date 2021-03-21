@@ -36,7 +36,7 @@ func ImprimirMensaje(m *pubsub.Message, i int) {
 	} else {
 		// lo mando
 		datos := strings.NewReader(string(m.Data))
-		res, err := http.Post("http://localhost:3000/mensajeria", "application/json; charset=UTF-8", datos)
+		res, err := http.Post("http://34.94.243.121/mensajeria", "application/json; charset=UTF-8", datos)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -64,7 +64,7 @@ func subscriber() error {
 
 	err = sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
 		logrus.Infof("Got mesagge %v", string(msg.Data))
-		// ImprimirMensaje(msg,received)
+		ImprimirMensaje(msg,received)
 		msg.Ack()
 		mu.Lock()
 		defer mu.Unlock()
