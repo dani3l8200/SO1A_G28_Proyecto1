@@ -43,7 +43,7 @@ if err != nil {
 	//fmt.Printf("State: %s\n", msg.State)
 	// lo mando
 	datos := strings.NewReader(string(m.Data))
-    res, err := http.Post("http://localhost:3000/mensajeria", "application/json; charset=UTF-8", datos)
+    res, err := http.Post("http://34.94.243.121/mensajeria", "application/json; charset=UTF-8", datos)
     if err != nil {
         log.Fatal(err)
     }
