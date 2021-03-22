@@ -19,14 +19,15 @@ void DFS(struct task_struct *task,struct seq_file *m)
 {   
     struct task_struct *child;
     struct list_head *list;
-    
+
     seq_printf(m,"\t{\n");
     seq_printf(m,"\t\t\"nombre\" : \"%s\",\n", task->comm);
     seq_printf(m,"\t\t\"pid\" : %d,\n", task->pid);
     seq_printf(m,"\t\t\"state\" : %li,\n", task->state);
     seq_printf(m,"\t\t\"pidp\" : %d\n", task->parent->pid);
-    seq_printf(m,"\t}\n");
+    seq_printf(m,"\t}");
     list_for_each(list, &task->children) {
+        seq_printf(m,",\n");
         child = list_entry(list, struct task_struct, sibling);
         DFS(child,m);
     }
@@ -36,7 +37,7 @@ static int my_proc_show(struct seq_file *m, void *v)
 {
     seq_printf(m,"[\n");
     DFS(&init_task,m);
-    seq_printf(m,"[\n");
+    seq_printf(m,"\n]\n");
     return 0;
 }
 
