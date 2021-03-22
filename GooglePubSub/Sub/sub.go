@@ -24,6 +24,7 @@ type InfectedOutput struct {
 	Age          int32  `json:"age"`
 	InfectedType string `json:"infectedtype"`
 	State        string `json:"state"`
+	Canal 		 string `json:"canal"`
 }
 
 func ImprimirMensaje(m *pubsub.Message, i int) {

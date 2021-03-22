@@ -22,6 +22,7 @@ type InfectedOutput struct {
 	Age          int32  `json:"age,omitempty"`
 	Infectedtype string `json:"infectedtype,omitempty"`
 	State        string `json:"state,omitempty"`
+	Canal        string `json:"canal"`
 }
 
 func ImprimirMensaje(m InfectedOutput) {
@@ -61,7 +62,7 @@ func (*server) Infected(ctx context.Context, req *infectedpb.InfectedRequest) (*
 	age := req.GetInfected().GetAge()
 	infectedType := req.GetInfected().GetInfectedtype()
 	state := req.GetInfected().GetState()
-	data := InfectedOutput{Name: name, Location: location, Age: age, Infectedtype: infectedType, State: state}
+	data := InfectedOutput{Name: name, Location: location, Age: age, Infectedtype: infectedType, State: state, Canal: "gRPC"}
 	ImprimirMensaje(data)
 	result := "Hello nombre: " + name + "\nlocation: " + location + "\nedad: " + strconv.FormatInt(int64(age), 10) + "\ntipo infectado: " + infectedType + "\nestado:" + state
 	res := &infectedpb.InfectedResponse{

@@ -28,6 +28,7 @@ type InfectedInput struct {
 	Age          int32  `json:"age" validate:"required"`
 	InfectedType string `json:"infectedtype" validate:"required"`
 	State        string `json:"state" validate:"required"`
+	Canal 		 string `json:"canal"`
 }
 
 func publisher(msg string) error {
@@ -63,7 +64,7 @@ func conexion(w http.ResponseWriter, r *http.Request) {
 
 	var infectedInput InfectedInput
 	err = json.Unmarshal(body, &infectedInput)
-
+	infectedInput.Canal = "Google Pub/Sub"
 	if err != nil {
 		log.Fatalf("error in decoding request %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
