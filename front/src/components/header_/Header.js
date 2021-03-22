@@ -6,10 +6,11 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import LandscapeIcon from '@material-ui/icons/Landscape';
 import MonitorIcon from '@material-ui/icons/DesktopWindows';
-
+import Flip  from 'react-reveal/Flip';
 import Monitor from "../monitor_/Monitor";
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Reportes from '../reportes_/reportes';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -74,16 +75,18 @@ export default function ScrollableTabsButtonForce() {
           aria-label="scrollable force tabs example"
         >
           <Tab label="Monitor" icon={<MonitorIcon />} {...a11yProps(0)} />
-          <Tab label="Reportes 1" icon={<LandscapeIcon />} {...a11yProps(1)} />
-
+          <Tab label="Vista de Metricas" icon={<LandscapeIcon />} {...a11yProps(1)} />
+          <Flip >
           <p className="offset-8 p-4">{mensaje}</p>
+          </Flip >
+        
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <Monitor/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <Reportes/>
       </TabPanel>
     </div>
   );
