@@ -12,7 +12,7 @@ export default function Body(){
        <div className = 'fondo col-12 col-xl-12 row ' style={{ width: '80rem' , height: 'auto' }} >
         
        
-        <Card.Body className = 'col-8 col-xl-8 fondo' style={{ height: '32rem' }} >
+        <Card.Body className = 'col-12 col-xl-8 fondo' style={{ height: '32rem' }} >
             <SplineAreaChart/>
         </Card.Body>
         

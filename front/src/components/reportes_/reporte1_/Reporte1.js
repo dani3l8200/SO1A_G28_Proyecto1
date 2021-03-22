@@ -3,9 +3,9 @@
 
 
 import './reporte1.css';
-
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import url from '../../../shared/url';
+import React, { Component } from "react";
+import axios from "axios";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,60 +13,81 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+export default class TableRep1 extends Component {
+  state = {
+    mensajes: []
+  };
+  async componentDidMount() {
+    // constructor
+    this.traeMensajes();
+  }
+
+  async traeMensajes(){
+      const ruta = url+"/consulta/getAllMsg/"
+      const res = await axios.get(ruta);
+      console.log(res);
+      this.setState({ mensajes: res.data });
+  }
+  async allMsg(){
+    const ruta = url+"/consulta/getAllMsg/"
+    const res = await axios.get(ruta);
+    console.log(res);
 }
 
-const rows = [ // ACA SERIA DE TRAER EL OBJETO DE LA PETICION DE AXIOS
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
 
-];
+  hola(){
+    console.log("hola");
+  }
 
-export default function TableRep1() {
-  const classes = useStyles();
 
-  return (
-    <TableContainer component={Paper} className="col-xl-10 col-10">
-      <Table className={classes.table} aria-label="caption table" >
-        <TableHead >
-          <TableRow>
-            <TableCell>PID</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Location</TableCell>
-            <TableCell align="right">Age</TableCell>
-            <TableCell align="right">Infectedtype</TableCell>
-            <TableCell align="right">State</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
+
+
+
+  render() {
+
+    return (
+      <>
+<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+  <Button  onClick={this.allMsg}>All</Button>
+  <Button onClick={this.hola} >gRPC</Button>
+  <Button>Nats</Button>
+  <Button>MQRabbit</Button>
+  <Button>Google Pub/Sub</Button>
+</ButtonGroup>
+
+      <TableContainer component={Paper} className="col-xl-10 col-10">
+        <Table style={{minWidth: 650}} aria-label="caption table" >
+          <TableHead >
+            <TableRow >
+              <TableCell>Canal</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Location</TableCell>
+              <TableCell align="center">Age</TableCell>
+              <TableCell align="center">Infectedtype</TableCell>
+              <TableCell align="center">State</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+          </TableHead>
+          <TableBody>
+            {this.state.mensajes.map((row) => (
+              <TableRow key={row.name}>
+                 
+                 <TableCell align="center">{row.canal}</TableCell>
+                <TableCell component="th" scope="row">{row.name}</TableCell>
+                <TableCell align="center">{row.location}</TableCell>
+                <TableCell align="center">{row.age}</TableCell>
+                <TableCell align="center">{row.infectedtype}</TableCell>
+                <TableCell align="center">{row.state}</TableCell>
+               
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </>
+    );
+  }
 }
