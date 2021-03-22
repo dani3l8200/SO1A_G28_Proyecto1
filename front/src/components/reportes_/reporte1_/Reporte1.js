@@ -15,7 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-
+import Animacion from 'react-reveal/Fade';
 
 
 export default class TableRep1 extends Component {
@@ -41,32 +41,32 @@ export default class TableRep1 extends Component {
 }
 
 
-  hola(){
-    console.log("hola");
-  }
-
-
-
-
 
   render() {
 
     return (
       <>
-<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+
+<Animacion>
+        <h2>Tabla de datos recopilados</h2>
+
+
+
+<ButtonGroup   variant="contained" color="primary" aria-label="contained primary button group">
   <Button  onClick={this.allMsg.bind(this)}>All</Button>
   <Button onClick={this.allMsg_canal.bind(this,"gRPC")} >gRPC</Button>
   <Button onClick={this.allMsg_canal.bind(this,"nats")} >Nats</Button>
-  <Button onClick={this.allMsg_canal.bind(this,"rabbit")}>MQRabbit</Button>
-  <Button onClick={this.allMsg_canal.bind(this,"Google Pub-Sub")}>Google Pub/Sub</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"rabbit")}>Rabbit</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"Google Pub-Sub")}>Google Pub-Sub</Button>
 </ButtonGroup>
+</Animacion>
 
 
-      <TableContainer component={Paper} className="col-xl-10 col-10" style={{maxHeight:481}}>
+      <TableContainer component={Paper} className="col-xl-10 col-10 my-3" style={{maxHeight:481}}>
         <Table style={{minWidth: 650}} aria-label="caption table" >
           <TableHead >
             <TableRow >
-              <TableCell>Canal</TableCell>
+              <TableCell align="center">Canal</TableCell>
               <TableCell align="center">Name</TableCell>
               <TableCell align="center">Location</TableCell>
               <TableCell align="center">Age</TableCell>

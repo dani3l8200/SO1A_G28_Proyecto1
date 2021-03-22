@@ -1,13 +1,35 @@
+// para las peticiones
+import axios from "axios";
+import url from '../../../shared/url';
 import React, { Component } from 'react';
 import CanvasJSReact from '../../../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
- 
+
+
 class GraficaCircular extends Component {
+	state = {
+		valores: []
+	};
+	async componentDidMount() { // es como un constructor
+		this.getTop5InfectadosPorDepartamento();
+	}
+
+	async getTop5InfectadosPorDepartamento(){
+		const ruta = url+"/consulta/getTop5DerpartamentosInfectados/";
+		const res = await axios.get(ruta);
+		let data = res.data;
+		let formateado = [];
+		for(let i = 0 ; i < data.length; i++){
+			formateado.push({y: data[i].count  , label: data[i]._id});
+		}
+		this.setState({valores: formateado})
+	}
+
 	render() {
 
         var dataPoint;
 		var total;
-		const options = {
+		let options = {
 			theme: "dark2",
 			animationEnabled: true,
 			title:{
@@ -16,29 +38,16 @@ class GraficaCircular extends Component {
 			data: [{
 				type: "funnel",
 				indexLabel: "{label} - {y}",
-				toolTipContent: "<b>{label}</b>: {y} <b>({percentage}%)</b>",
+				toolTipContent: "<b>{label}</b>: {y} <b>{percentage}</b>",
 				neckWidth: 20,
 				neckHeight: 0,
 				valueRepresents: "area",
-				dataPoints: [
-					{ y: 265, label: "Applications" },
-					{ y: 134, label: "Interviewed" },
-					{ y: 48, label: "Assessment" },
-					{ y: 26, label: "Hired" },
-                    { y: 10, label: "Hi" }
-				]
+				dataPoints: this.state.valores
 			}]
 		}
-		//calculate percentage
-		dataPoint = options.data[0].dataPoints;
-		total = dataPoint[0].y;
-		for(var i = 0; i < dataPoint.length; i++) {
-			if(i == 0) {
-				options.data[0].dataPoints[i].percentage = 100;
-			} else {
-				options.data[0].dataPoints[i].percentage = ((dataPoint[i].y / total) * 100).toFixed(2);
-			}
-		}
+
+
+
 		return (
 			<div>
                 <h1>TOP 5 departamentos infectados </h1>
@@ -52,4 +61,4 @@ class GraficaCircular extends Component {
 	}
 }
 
-export default GraficaCircular;                
+export default GraficaCircular;
