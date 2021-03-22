@@ -34,6 +34,9 @@ func publicar_por_HTTP(res http.ResponseWriter , req * http.Request){
 			data, _ := json.Marshal(mensaje) // LO CODIFICA A JSON 
 			json_byte :=[]byte(string(data))
 			publicar(json_byte)
+		default:
+			fmt.Fprintf(res, "Metodo %s no soportado \n", req.Method)
+			return
 	}
 }
 
