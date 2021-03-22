@@ -17,25 +17,27 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 
+
 export default class TableRep1 extends Component {
   state = {
     mensajes: []
   };
   async componentDidMount() {
     // constructor
-    this.traeMensajes();
+    this.allMsg();
   }
 
-  async traeMensajes(){
-      const ruta = url+"/consulta/getAllMsg/"
+  async allMsg_canal(canal){
+      const ruta = url+"/consulta/getAllMsg/"+canal;
       const res = await axios.get(ruta);
       console.log(res);
       this.setState({ mensajes: res.data });
   }
   async allMsg(){
-    const ruta = url+"/consulta/getAllMsg/"
+    const ruta = url+"/consulta/getAllMsg/";
     const res = await axios.get(ruta);
     console.log(res);
+    this.setState({ mensajes: res.data});
 }
 
 
@@ -52,14 +54,15 @@ export default class TableRep1 extends Component {
     return (
       <>
 <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-  <Button  onClick={this.allMsg}>All</Button>
-  <Button onClick={this.hola} >gRPC</Button>
-  <Button>Nats</Button>
-  <Button>MQRabbit</Button>
-  <Button>Google Pub/Sub</Button>
+  <Button  onClick={this.allMsg.bind(this)}>All</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"gRPC")} >gRPC</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"nats")} >Nats</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"rabbit")}>MQRabbit</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"Google Pub-Sub")}>Google Pub/Sub</Button>
 </ButtonGroup>
 
-      <TableContainer component={Paper} className="col-xl-10 col-10">
+
+      <TableContainer component={Paper} className="col-xl-10 col-10" style={{maxHeight:481}}>
         <Table style={{minWidth: 650}} aria-label="caption table" >
           <TableHead >
             <TableRow >
@@ -87,6 +90,8 @@ export default class TableRep1 extends Component {
           </TableBody>
         </Table>
       </TableContainer>
+
+
       </>
     );
   }
