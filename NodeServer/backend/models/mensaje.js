@@ -22,6 +22,10 @@ const mensajeSchema = new Schema(
             type: String,
             required: true,
         },
+        canal: {
+            type: String,
+            required: true,
+        },
     }
 );
 /*
