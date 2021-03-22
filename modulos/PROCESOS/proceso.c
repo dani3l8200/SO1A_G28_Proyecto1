@@ -20,7 +20,14 @@ void DFS(struct task_struct *task,struct seq_file *m)
     struct task_struct *child;
     struct list_head *list;
 
-    seq_printf(m,"name: %s, pid: [%d], state: %li\n", task->comm, task->pid, task->state);
+
+    seq_printf(m,"nombre : %s, pid : %d, state : %li, pidp : %d\n", task->comm, task->pid, task->state, task->parent->pid);
+    seq_printf(m,"\t{\n");
+    seq_printf(m,"\t\t\"nombre\" : \"%s\",\n", task->comm);
+    seq_printf(m,"\t\t\"pid\" : %d,\n", task->pid);
+    seq_printf(m,"\t\t\"state\" : %li,\n", task->state);
+    seq_printf(m,"\t\t\"pidp\" : %d\n", task->parent->pid);
+    seq_printf(m,"\t}\n");
     list_for_each(list, &task->children) {
         child = list_entry(list, struct task_struct, sibling);
         DFS(child,m);
@@ -29,7 +36,9 @@ void DFS(struct task_struct *task,struct seq_file *m)
 
 static int my_proc_show(struct seq_file *m, void *v)
 {
+    seq_printf(m,"[\n");
     DFS(&init_task,m);
+    seq_printf(m,"[\n");
     return 0;
 }
 
@@ -54,7 +63,7 @@ static struct proc_ops my_fops={
 static int __init test_init(void)
 {
     struct proc_dir_entry *entry;
-    entry = proc_create("process_module", 0777, NULL, &my_fops);
+    entry = proc_create("process_module.json", 0777, NULL, &my_fops);
     if (!entry)
     {
         return -1;
@@ -68,7 +77,7 @@ static int __init test_init(void)
 
 static void __exit test_exit(void)
 {
-    remove_proc_entry("process_module", NULL);
+    remove_proc_entry("process_module.json", NULL);
     printk(KERN_INFO "@process_module finalizado\n");
 }
 
@@ -78,4 +87,6 @@ module_exit(test_exit);
 /*
 http://web-sisop.disca.upv.es/lxr/source/linux/include/linux/sched.h#0528
 https://stackoverflow.com/questions/19208487/kernel-module-that-iterates-over-all-tasks-using-depth-first-tree
+http://sop.upv.es/gii-dso/es/t3-procesos-en-linux/gen-t3-procesos-en-linux.html
+http://web-sisop.disca.upv.es/lxr/source/linux/include/linux/sched.h#0578
 */

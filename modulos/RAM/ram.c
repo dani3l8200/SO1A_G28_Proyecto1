@@ -16,7 +16,7 @@ MODULE_VERSION("0.1");
 static int my_proc_show(struct seq_file *m, void *v)
 {
     struct sysinfo info;
-
+    long cached;
 	si_meminfo(&info);
     /*
     page_alloc.c
@@ -35,38 +35,17 @@ static int my_proc_show(struct seq_file *m, void *v)
         val->mem_unit = PAGE_SIZE;
     }
     */
-   	long cached = global_node_page_state(NR_FILE_PAGES) + total_swapcache_pages() + info.bufferram;
+   	cached = global_node_page_state(NR_FILE_PAGES) + total_swapcache_pages() + info.bufferram;
 	if (cached < 0)
 		cached = 0;
-    //si_swapinfo(&info);
-    /*
-    #include <linux/swap.h>
-
-    void si_swapinfo(struct sysinfo *val)
-{
-	unsigned int type;
-	unsigned long nr_to_be_unused = 0;
-
-	spin_lock(&swap_lock);
-	for (type = 0; type < nr_swapfiles; type++) {
-		struct swap_info_struct *si = swap_info[type];
-
-		if ((si->flags & SWP_USED) && !(si->flags & SWP_WRITEOK))
-			nr_to_be_unused += si->inuse_pages;
-	}
-	val->freeswap = atomic_long_read(&nr_swap_pages) + nr_to_be_unused;
-	val->totalswap = total_swap_pages + nr_to_be_unused;
-	spin_unlock(&swap_lock);
-}
-    */
-    
-    seq_printf(m,"Uptime: %ld:%ld:%ld\n", info.uptime/3600, info.uptime%3600/60, info.uptime%60);
-    seq_printf(m,"Total RAM: %ld kb\n", info.totalram*info.mem_unit/1024);
-    seq_printf(m,"Free RAM: %ld kb\n", info.freeram*info.mem_unit/1024);
-    seq_printf(m,"Free CACHE: %ld kb\n", (cached*info.mem_unit)/1024  );
-    seq_printf(m,"Used RAM: %ld kb\n", ((info.totalram-info.freeram-cached)*info.mem_unit)/1024);
-    seq_printf(m,"Process count: %d\n", info.procs);
-
+   
+    seq_printf(m,"{\n ");
+    //seq_printf(m,"\t\"uptime\" : %ld:%ld:%ld,\n", info.uptime/3600, info.uptime%3600/60, info.uptime%60);
+    seq_printf(m,"\t\"total\" : %ld,\n", info.totalram*info.mem_unit/1024);
+    seq_printf(m,"\t\"free\" : %ld,\n", info.freeram*info.mem_unit/1024);
+    seq_printf(m,"\t\"cache\" : %ld,\n", (cached*info.mem_unit)/1024  );
+    seq_printf(m,"\t\"used\" : %ld\n", ((info.totalram-info.freeram-cached)*info.mem_unit)/1024);
+    seq_printf(m,"}");
     return 0;
 }
 
@@ -91,7 +70,7 @@ static struct proc_ops my_fops={
 static int __init test_init(void)
 {
     struct proc_dir_entry *entry;
-    entry = proc_create("ram_module", 0777, NULL, &my_fops);
+    entry = proc_create("ram_module.json", 0777, NULL, &my_fops);
     if (!entry)
     {
         return -1;
@@ -105,7 +84,7 @@ static int __init test_init(void)
 
 static void __exit test_exit(void)
 {
-    remove_proc_entry("ram_module", NULL);
+    remove_proc_entry("ram_module.json", NULL);
     printk(KERN_INFO "@ram-module finalizado\n");
 }
 
