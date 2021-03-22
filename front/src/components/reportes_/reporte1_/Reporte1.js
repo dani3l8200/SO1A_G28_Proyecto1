@@ -15,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Animacion from 'react-reveal/Fade';
 
 
 export default class TableRep1 extends Component {
@@ -23,27 +24,21 @@ export default class TableRep1 extends Component {
   };
   async componentDidMount() {
     // constructor
-    this.traeMensajes();
+    this.allMsg();
   }
 
-  async traeMensajes(){
-      const ruta = url+"/consulta/getAllMsg/"
+  async allMsg_canal(canal){
+      const ruta = url+"/consulta/getAllMsg/"+canal;
       const res = await axios.get(ruta);
       console.log(res);
       this.setState({ mensajes: res.data });
   }
   async allMsg(){
-    const ruta = url+"/consulta/getAllMsg/"
+    const ruta = url+"/consulta/getAllMsg/";
     const res = await axios.get(ruta);
     console.log(res);
+    this.setState({ mensajes: res.data});
 }
-
-
-  hola(){
-    console.log("hola");
-  }
-
-
 
 
 
@@ -51,19 +46,27 @@ export default class TableRep1 extends Component {
 
     return (
       <>
-<ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-  <Button  onClick={this.allMsg}>All</Button>
-  <Button onClick={this.hola} >gRPC</Button>
-  <Button>Nats</Button>
-  <Button>MQRabbit</Button>
-  <Button>Google Pub/Sub</Button>
-</ButtonGroup>
 
-      <TableContainer component={Paper} className="col-xl-10 col-10">
+<Animacion>
+        <h2>Tabla de datos recopilados</h2>
+
+
+
+<ButtonGroup   variant="contained" color="primary" aria-label="contained primary button group">
+  <Button  onClick={this.allMsg.bind(this)}>All</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"gRPC")} >gRPC</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"nats")} >Nats</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"rabbit")}>Rabbit</Button>
+  <Button onClick={this.allMsg_canal.bind(this,"Google Pub-Sub")}>Google Pub-Sub</Button>
+</ButtonGroup>
+</Animacion>
+
+
+      <TableContainer component={Paper} className="col-xl-10 col-10 my-3" style={{maxHeight:481}}>
         <Table style={{minWidth: 650}} aria-label="caption table" >
           <TableHead >
             <TableRow >
-              <TableCell>Canal</TableCell>
+              <TableCell align="center">Canal</TableCell>
               <TableCell align="center">Name</TableCell>
               <TableCell align="center">Location</TableCell>
               <TableCell align="center">Age</TableCell>
@@ -87,6 +90,8 @@ export default class TableRep1 extends Component {
           </TableBody>
         </Table>
       </TableContainer>
+
+
       </>
     );
   }

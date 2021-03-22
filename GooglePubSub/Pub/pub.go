@@ -64,7 +64,7 @@ func conexion(w http.ResponseWriter, r *http.Request) {
 
 	var infectedInput InfectedInput
 	err = json.Unmarshal(body, &infectedInput)
-	infectedInput.Canal = "Google Pub/Sub"
+	infectedInput.Canal = "Google Pub-Sub"
 	if err != nil {
 		log.Fatalf("error in decoding request %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)

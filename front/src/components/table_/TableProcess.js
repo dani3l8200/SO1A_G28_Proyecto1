@@ -40,7 +40,7 @@ export default function TableProcess() {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper} className="col-xl-10 col-10">
+    <TableContainer component={Paper} className="col-xl-10 col-10" style={{maxHeight:481}}>
       <Table className={classes.table} aria-label="caption table" >
         <TableHead>
           <TableRow>

@@ -10,6 +10,8 @@ aca va toda la logica que solicitara el front , para poder realizar los reportes
 /*
 Tabla de datos recopilados (ordenados con el último primero) con la capacidad de filtrarse por la ruta
 de ingreso (Todas, NATS, gRPC, RabbitMQ o Google PubSub).
+
+
  Región más infectada; una región es una agrupación de departamentos, se tomarán en cuenta los
  definidos en esta página:
  Top 5 departamentos infectados. (Gráfica de Funnel)
@@ -36,5 +38,24 @@ consulta.get_for_channel = async(req,res) => {
         console.log(error);
     }
 }
+
+
+consulta.getTop5DerpartamentosInfectados = async(req,res) =>{
+    try{
+        const top5 = await mensajeSchema.aggregate([{ "$group": {_id: "$location", count: {$sum:1}}} , {$sort: {"count": -1}} , {$limit: 5}]);
+        res.send(top5)
+    }catch(error){
+        console.log("error en el TOP 5 de departamentos infectados");
+    }
+}
+consulta.regionMasInfectada = async(req,res) =>{
+    try{
+        const top5 = await mensajeSchema.aggregate([{ "$group": {_id: "$location", count: {$sum:1}}} , {$sort: {"count": -1}}]);
+        res.send(top5)
+    }catch(error){
+        console.log("error en el TOP 5 de departamentos infectados");
+    }
+}
+
 
 module.exports =  consulta;
