@@ -5,12 +5,13 @@
 #include <linux/seq_file.h>
 #include <linux/swap.h>
 #include <linux/mm.h>
+#include <linux/vmstat.h>
 
+#define total_swapcache_pages()			0UL
 MODULE_LICENSE("GPL-2.0");
 MODULE_AUTHOR("Anthony Fernando Son Mux");
 MODULE_DESCRIPTION("Modulo el estado de la memória RAM");
 MODULE_VERSION("0.1");
-
 
 static int my_proc_show(struct seq_file *m, void *v)
 {
@@ -34,7 +35,10 @@ static int my_proc_show(struct seq_file *m, void *v)
         val->mem_unit = PAGE_SIZE;
     }
     */
-    si_swapinfo(&info);
+   	long cached = global_node_page_state(NR_FILE_PAGES) + total_swapcache_pages() + info.bufferram;
+	if (cached < 0)
+		cached = 0;
+    //si_swapinfo(&info);
     /*
     #include <linux/swap.h>
 
@@ -57,9 +61,10 @@ static int my_proc_show(struct seq_file *m, void *v)
     */
     
     seq_printf(m,"Uptime: %ld:%ld:%ld\n", info.uptime/3600, info.uptime%3600/60, info.uptime%60);
-    seq_printf(m,"Total RAM: %ld MB\n", info.totalram*info.mem_unit/1024);
-    seq_printf(m,"Free RAM: %ld MB\n", info.freeram*info.mem_unit/1024);
-    seq_printf(m,"Used RAM: %ld MB\n", ((info.totalram-info.freeram-info.bufferram-info.sharedram-info.totalswap)*info.mem_unit)/1024);
+    seq_printf(m,"Total RAM: %ld kb\n", info.totalram*info.mem_unit/1024);
+    seq_printf(m,"Free RAM: %ld kb\n", info.freeram*info.mem_unit/1024);
+    seq_printf(m,"Free CACHE: %ld kb\n", (cached*info.mem_unit)/1024  );
+    seq_printf(m,"Used RAM: %ld kb\n", ((info.totalram-info.freeram-cached)*info.mem_unit)/1024);
     seq_printf(m,"Process count: %d\n", info.procs);
 
     return 0;
