@@ -19,9 +19,7 @@ void DFS(struct task_struct *task,struct seq_file *m)
 {   
     struct task_struct *child;
     struct list_head *list;
-
-
-    seq_printf(m,"nombre : %s, pid : %d, state : %li, pidp : %d\n", task->comm, task->pid, task->state, task->parent->pid);
+    
     seq_printf(m,"\t{\n");
     seq_printf(m,"\t\t\"nombre\" : \"%s\",\n", task->comm);
     seq_printf(m,"\t\t\"pid\" : %d,\n", task->pid);
