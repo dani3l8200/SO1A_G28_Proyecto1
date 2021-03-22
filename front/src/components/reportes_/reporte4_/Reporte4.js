@@ -1,3 +1,5 @@
+import axios from "axios";
+import url from '../../../shared/url';
 import React, { Component } from 'react';
 import CanvasJSReact from '../../../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -7,7 +9,53 @@ se puede optimizar la grafica del componente 4 y 5 pasando por parametros valore
 
 */
 
+/*
+
+Gráfico circular del porcentaje de casos infectados por state.
+Gráfico circular del porcentaje de casos infectados por infectedType.
+*/
+
 class GraficaCircular extends Component {
+	state = {
+		valores1: [],
+		valores2: []
+	};
+
+	async getForState(){
+		const ruta = url+"/consulta/getForState/";
+		const res = await axios.get(ruta);
+		let data = res.data;
+		let formateado = [];
+		let total = 0;
+		for(let i = 0 ; i < data.length; i++){
+			total +=data[i].count;
+		}
+		for(let i = 0 ; i < data.length; i++){
+			let porcentaje = (data[i].count/total) *100;
+			formateado.push({y: porcentaje  , label: data[i]._id});
+		}
+		this.setState({valores1: formateado})
+	}
+
+	async getForInfectedType(){
+		const ruta = url+"/consulta/getForInfectedType/";
+		const res = await axios.get(ruta);
+		let data = res.data;
+		let formateado = [];
+		let total = 0;
+		for(let i = 0 ; i < data.length; i++){
+			total +=data[i].count;
+		}
+		for(let i = 0 ; i < data.length; i++){
+			let porcentaje = (data[i].count/total) *100;
+			formateado.push({y: porcentaje  , label: data[i]._id});
+		}
+		this.setState({valores2: formateado})
+	}
+	async componentDidMount() { // es como un constructor
+		this.getForState();
+		this.getForInfectedType();
+	}
     render() {
 		const rep4 = {
 			theme: "dark2",
@@ -24,44 +72,33 @@ class GraficaCircular extends Component {
 				toolTipContent: "{label}: <strong>{y}%</strong>",
 				indexLabel: "{y}%",
 				indexLabelPlacement: "inside",
-				dataPoints: [
-					{ y: 32, label: "Health" },
-					{ y: 22, label: "Finance" },
-					{ y: 15, label: "Education" },
-					{ y: 19, label: "Career" },
-					{ y: 5, label: "Family" },
-					{ y: 7, label: "Real Estate" }
-				]
+				dataPoints:this.state.valores1
 			}]
 		}
 
 		const rep5 = {
 			theme: "dark2",
 			animationEnabled: true,
-			exportFileName: "Porcentaje de casos infectados por infectedType",
+			exportFileName: "New Year Resolutions",
 			exportEnabled: true,
 			title:{
-				text: "Top Categories of New Year's Resolution"
+				text: "Porcentaje de casos infectados por InfectedType"
 			},
 			data: [{
 				type: "pie",
-
+				showInLegend: true,
 				legendText: "{label}",
+				toolTipContent: "{label}: <strong>{y}%</strong>",
 				indexLabel: "{y}%",
 				indexLabelPlacement: "inside",
-				dataPoints: [
-					{ y: 32, label: "Health" },
-					{ y: 22, label: "Finance" },
-					{ y: 15, label: "GERMAN" },
-					{ y: 19, label: "HI" },
-					{ y: 5, label: "Family" },
-					{ y: 7, label: "Real Estate" }
-				]
+				dataPoints:this.state.valores2
 			}]
 		}
+
+
 		return (
-			<>
-			<div style={{height: 100}}></div>
+		<>
+		<div style={{height: 100}}></div>
 
 		<div className="col-xl-6 col-6">
 			<CanvasJSChart options = {rep4} />
@@ -70,8 +107,6 @@ class GraficaCircular extends Component {
 		<div className="col-xl-6 col-6">
 			<CanvasJSChart options = {rep5} />
 		</div>
-		
-		
 		</>
 		);
 	}

@@ -27,8 +27,6 @@ class GraficaCircular extends Component {
 
 	render() {
 
-        var dataPoint;
-		var total;
 		let options = {
 			theme: "dark2",
 			animationEnabled: true,
