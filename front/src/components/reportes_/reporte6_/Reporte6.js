@@ -41,9 +41,7 @@ export default function TableProcess() {
 
   return (
       <>
-      <div style={{height: 100}}>
-
-</div>
+      <div style={{height: 100}}></div>
 <h1>Tabla con los últimos 5 casos registrados</h1>
     <TableContainer component={Paper} className="col-xl-10 col-10">
       <Table className={classes.table} aria-label="caption table" >
