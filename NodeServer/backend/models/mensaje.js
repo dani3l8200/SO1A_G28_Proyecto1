@@ -13,7 +13,7 @@ const mensajeSchema = new Schema(
         },
         age: {
             type: Number
-        },      
+        },
         infectedtype: {
             type: String,
             required: true,
@@ -26,13 +26,11 @@ const mensajeSchema = new Schema(
             type: String,
             required: true,
         },
+        fecha:{ // para ordenarlos por fecha y traer los ultimos en las consultas
+            type: Date,
+            default : Date.now
+        }
     }
 );
-/*
-Name string 
-Location string 
-Age  int
-Infectedtype string
-State string
-*/ 
+
 module.exports =  model('Mensaje', mensajeSchema)

@@ -17,9 +17,12 @@ controller_mensajeria.test = async(req,res)=>{
     res.status(200).json({text: 'mensaje almacenado'});
 }
 
+/*
+// para ver los datos
 mensajeSchema.find(function (err, mensajitos) {
     if (err) return console.error(err)
     console.log(mensajitos)
-})
+});
+*/
 
 module.exports = controller_mensajeria;
