@@ -18,6 +18,7 @@ type Mensaje struct{
 	Age	int 	`json:"age,omitempty"`
 	Infectedtype string `json:"infectedtype,omitempty"`
 	State string `json:"state,omitempty"`
+	Canal string `json:"canal,empty"`
 }
 
 func main() {
@@ -30,7 +31,8 @@ func publicar_por_HTTP(res http.ResponseWriter , req * http.Request){
 	switch req.Method {
 	case "POST":
 			var mensaje Mensaje
-			_ = json.NewDecoder(req.Body).Decode(&mensaje)			
+			_ = json.NewDecoder(req.Body).Decode(&mensaje)
+			mensaje.Canal = "nats"			
 			data, _ := json.Marshal(mensaje) // LO CODIFICA A JSON 
 			json_byte :=[]byte(string(data))
 			publicar(json_byte)

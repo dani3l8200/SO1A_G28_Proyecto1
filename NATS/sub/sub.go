@@ -23,6 +23,7 @@ type Mensaje struct{
 	Age	int 	`json:"age,omitempty"`
 	Infectedtype string `json:"infectedtype,omitempty"`
 	State string `json:"state,omitempty"`
+	Canal string `json:"canal,empty"`
 }
 
 
@@ -42,6 +43,7 @@ if err != nil {
 	//fmt.Printf("Infectedtype: %s\n", msg.Infectedtype)
 	//fmt.Printf("State: %s\n", msg.State)
 	// lo mando
+	println(string(m.Data))
 	datos := strings.NewReader(string(m.Data))
     res, err := http.Post("http://34.94.243.121/mensajeria", "application/json; charset=UTF-8", datos)
     if err != nil {
