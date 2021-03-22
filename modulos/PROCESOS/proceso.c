@@ -88,5 +88,4 @@ module_exit(test_exit);
 http://web-sisop.disca.upv.es/lxr/source/linux/include/linux/sched.h#0528
 https://stackoverflow.com/questions/19208487/kernel-module-that-iterates-over-all-tasks-using-depth-first-tree
 http://sop.upv.es/gii-dso/es/t3-procesos-en-linux/gen-t3-procesos-en-linux.html
-http://web-sisop.disca.upv.es/lxr/source/linux/include/linux/sched.h#0578
 */
