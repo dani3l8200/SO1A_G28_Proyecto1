@@ -1,4 +1,4 @@
-obj-m += proces.o # Definir el nombre del archivo que esperamos de salida
+obj-m += proceso.o # Definir el nombre del archivo que esperamos de salida
 all:
     # Definir que se hará cuando se compile
 	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd)
