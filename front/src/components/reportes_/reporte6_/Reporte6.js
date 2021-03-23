@@ -3,9 +3,9 @@
 
 
 
-
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import url from '../../../shared/url';
+import React, { Component } from "react";
+import axios from "axios";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,59 +14,69 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
+import Animacion2 from 'react-reveal/Jello';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+export default class TableRep1 extends Component {
+  state = {
+    mensajes: []
+  };
+  async componentDidMount() {
+    // constructor
+    this.allMsglimit5();
+  }
+
+  async allMsglimit5(){
+    const ruta = url+"/consulta/ultimos5casos/";
+    const res = await axios.get(ruta);
+    console.log(res);
+    this.setState({ mensajes: res.data});
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Eclair', 262, 16.0, 24, 6.0),
 
-];
 
-export default function TableProcess() {
-  const classes = useStyles();
+  render() {
 
-  return (
+    return (
       <>
-      <div style={{height: 100}}></div>
-<h1>Tabla con los últimos 5 casos registrados</h1>
-    <TableContainer component={Paper} className="col-xl-10 col-10">
-      <Table className={classes.table} aria-label="caption table" >
-        <TableHead>
-          <TableRow>
-            <TableCell>PID</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Father PID</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
+<div style={{height:150}}></div>
+<Animacion2>
+        <h2>ULTIMOS 5 CASOS</h2>
+</Animacion2>
+
+
+      <TableContainer component={Paper} className="col-xl-10 col-10 my-3" style={{maxHeight:481}}>
+        <Table style={{minWidth: 650}} aria-label="caption table" >
+          <TableHead >
+
+            <TableRow >
+              <TableCell align="center">Canal</TableCell>
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Location</TableCell>
+              <TableCell align="center">Age</TableCell>
+              <TableCell align="center">Infectedtype</TableCell>
+              <TableCell align="center">State</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    </>
-  );
+        
+          </TableHead>
+          <TableBody>
+            {this.state.mensajes.map((row) => (
+              <TableRow key={row.name}>
+                 
+                 <TableCell align="center">{row.canal}</TableCell>
+                <TableCell component="th" scope="row">{row.name}</TableCell>
+                <TableCell align="center">{row.location}</TableCell>
+                <TableCell align="center">{row.age}</TableCell>
+                <TableCell align="center">{row.infectedtype}</TableCell>
+                <TableCell align="center">{row.state}</TableCell>
+               
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+
+      </>
+    );
+  }
 }
