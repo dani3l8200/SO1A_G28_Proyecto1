@@ -98,6 +98,7 @@ class GraficaCircular extends Component {
 
 		return (
 		<>
+	      <header className="App-header">
 		<div style={{height: 100}}></div>
 
 		<div className="col-xl-6 col-6">
@@ -107,6 +108,8 @@ class GraficaCircular extends Component {
 		<div className="col-xl-6 col-6">
 			<CanvasJSChart options = {rep5} />
 		</div>
+		<div style={{height: 100}}></div>
+		</header>	
 		</>
 		);
 	}

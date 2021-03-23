@@ -79,15 +79,17 @@ class GraficaBarras extends Component {
 		}
 		return (
         <>
-		<div style={{height: 250}}></div>
+		   <header className="App-header">
+		<div style={{height: 10}}></div>
         <div className="col-xl-10 col-10 col-md-10">
 			<CanvasJSChart options = {options}/>
 		</div>
-
+		<div style={{height: 100}}></div>
+		</header>
         </>
 		);
 	}
 
 }
 
-export default GraficaBarras;                           
+export default GraficaBarras;

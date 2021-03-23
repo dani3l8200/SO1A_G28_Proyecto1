@@ -98,6 +98,7 @@ export default class Reporte2 extends Component {
 
     return (
       <>
+      <header className="App-header">
       <div style={{height: 100}}></div>
   
       <CardGroup className="col-x-10 col-10  p-5 p-xl-5 fondo">
@@ -112,6 +113,10 @@ export default class Reporte2 extends Component {
       </Card>
 
       </CardGroup>
+      <div style={{height: 100}}></div>
+</header>
+
+
       </>
     );
   }
