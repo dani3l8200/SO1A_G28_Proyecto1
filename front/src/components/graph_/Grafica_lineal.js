@@ -5,11 +5,8 @@ import url from '../../shared/url';
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-var dps = [];   //dataPoints.
-var xVal = dps.length + 1;
-var yVal = 15;
-var updateInterval = 1000;
- 
+var puntosGrafica = [];   //dataPoints.
+
 class SplineAreaChart extends Component {
 
 	constructor() {
@@ -17,7 +14,7 @@ class SplineAreaChart extends Component {
 		this.updateChart = this.updateChart.bind(this);
 	}
 	componentDidMount() {
-		this.hilo = setInterval(this.updateChart, updateInterval);
+		this.hilo = setInterval(this.updateChart, 1500);
 	}
 	componentWillUnmount() {
 		clearInterval(this.hilo);
@@ -27,10 +24,11 @@ class SplineAreaChart extends Component {
 		let respuesta = await axios.get(ruta);
 		let res = respuesta.data;
 		let porcentaje =  (res.used/res.total)*100;
-		dps.push({x: xVal,y: porcentaje});
-		xVal++;
-		if (dps.length >  10 ) {
-			dps.shift();
+		var d = new Date();
+		let horaActual = d.getHours() +":"+ d.getMinutes() +":"+ d.getSeconds();
+		puntosGrafica.push({label: horaActual,y: porcentaje});
+		if (puntosGrafica.length >  10 ) {
+			puntosGrafica.shift();
 		}
 		this.chart.render();
 	}
@@ -41,7 +39,7 @@ class SplineAreaChart extends Component {
 			},
 			data: [{
 				type: "area",
-				dataPoints : dps
+				dataPoints : puntosGrafica
 			}]
 		}
 		return (

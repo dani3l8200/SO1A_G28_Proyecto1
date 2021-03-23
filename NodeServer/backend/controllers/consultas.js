@@ -26,7 +26,7 @@ Gráfico de barras del rango de edad de infectados (rangos de 10 años, por ejem
 */
 consulta.get_All_msg = async(req,res) => {// sin filtro alguno
     try {
-        const mensajes = await mensajeSchema.find().sort({fecha:-1}); // LOS DEVUELVE DESCENDENTE
+        const mensajes = await mensajeSchema.find().sort({fecha:-1}).limit(50); // LOS DEVUELVE DESCENDENTE
         res.send(mensajes);// devuelve todos los mensajes
     } catch (error) {
         console.log(error);

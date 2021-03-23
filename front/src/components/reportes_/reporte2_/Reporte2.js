@@ -87,8 +87,8 @@ export default class Reporte2 extends Component {
       }
       return 0;
     });
-    console.log(regiones);
-    console.log("region mas infectada :" , regiones[regiones.length-1]);
+ //   console.log(regiones);
+//    console.log("region mas infectada :" , regiones[regiones.length-1]);
     this.setState({ imagen: regiones[regiones.length-1].imagen});
 }
 

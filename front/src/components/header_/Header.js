@@ -83,12 +83,13 @@ export default function ScrollableTabsButtonForce() {
           textColor="primary"
           aria-label="scrollable force tabs example"
         >
-          <Tab label="Monitor" icon={<MonitorIcon />} {...a11yProps(0)} />
-          <Tab label="Datos Recopilados" icon={<AssignmentIcon />} {...a11yProps(1)} />
-          <Tab label="Departamentos mas Infectados" icon={<LandscapeIcon />} {...a11yProps(2)} />
-          <Tab label="Infectados por State y Infectedtype " icon={<ContactMailIcon />} {...a11yProps(3)} />
-          <Tab label="Ultimos 5 casos" icon={<CompareIcon />} {...a11yProps(4)} />
-          <Tab label="Infectados por Rango de edad" icon={<FaceIcon />} {...a11yProps(5)} />
+
+          <Tab label="Datos Recopilados" icon={<AssignmentIcon />} {...a11yProps(0)} />
+          <Tab label="Departamentos mas Infectados" icon={<LandscapeIcon />} {...a11yProps(1)} />
+          <Tab label="Infectados por State y Infectedtype " icon={<ContactMailIcon />} {...a11yProps(2)} />
+          <Tab label="Ultimos 5 casos" icon={<CompareIcon />} {...a11yProps(3)} />
+          <Tab label="Infectados por Rango de edad" icon={<FaceIcon />} {...a11yProps(4)} />
+          <Tab label="Monitor" icon={<MonitorIcon />} {...a11yProps(5)} />
           
           <Flip >
           <p className="offset-1 p-4" style={{fontSize: 25}}>{mensaje}</p>
@@ -96,27 +97,29 @@ export default function ScrollableTabsButtonForce() {
 
         </Tabs>
       </AppBar>
+
       <TabPanel value={value} index={0}>
-        <Monitor/>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
         <Reportes/>
       </TabPanel>
 
-      <TabPanel value={value} index={2}>
+      <TabPanel value={value} index={1}>
         <Rep2/>
       </TabPanel>
 
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
         <Rep4/>
       </TabPanel>
 
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={3}>
         <Rep6/>
       </TabPanel>
 
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={4}>
         <Rep7/>
+      </TabPanel>
+
+      <TabPanel value={value} index={5}>
+        <Monitor/>
       </TabPanel>
 
     </div>

@@ -30,13 +30,13 @@ export default class TableRep1 extends Component {
   async allMsg_canal(canal){
       const ruta = url+"/consulta/getAllMsg/"+canal;
       const res = await axios.get(ruta);
-      console.log(res);
+   //   console.log(res);
       this.setState({ mensajes: res.data });
   }
   async allMsg(){
     const ruta = url+"/consulta/getAllMsg/";
     const res = await axios.get(ruta);
-    console.log(res);
+   // console.log(res);
     this.setState({ mensajes: res.data});
 }
 
