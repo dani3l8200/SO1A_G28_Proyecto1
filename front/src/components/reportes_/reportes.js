@@ -7,21 +7,11 @@ import Rep6 from './reporte6_/Reporte6';
 import Rep7 from './reporte7_/Reporte7';
 export default function Monitor(){
 
-    return (
-
+return (
 <header className="App-header">
-
-<div style={{height: 150}}></div>
-
-
+<div style={{height: 25}}></div>
 <Rep1/>
-<Rep2/>
-<Rep4/>
-<Rep6/>
-<Rep7/>
-
-
-<div style={{height: 100}}></div>
+<div style={{height: 200}}></div>
 </header>
-    )
+)
 }

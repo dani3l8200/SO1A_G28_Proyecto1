@@ -38,6 +38,7 @@ export default class TableRep1 extends Component {
 
     return (
       <>
+         <header className="App-header">
 <div style={{height:150}}></div>
 <Animacion2>
         <h2>ULTIMOS 5 CASOS</h2>
@@ -74,8 +75,8 @@ export default class TableRep1 extends Component {
           </TableBody>
         </Table>
       </TableContainer>
-
-
+      <div style={{height:150}}></div>
+      </header>
       </>
     );
   }
