@@ -5,7 +5,11 @@ export default function Monitor(){
   
     return (
         <>
+        
         <header className="App-header">
+        <div style={{height:100}}>
+
+</div>
         <Graph/>
         <TableProcess/>
         <div style={{height: 100}}>
