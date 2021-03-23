@@ -35,7 +35,7 @@ consulta.get_All_msg = async(req,res) => {// sin filtro alguno
 
 consulta.get_for_channel = async(req,res) => {
     try {
-        const mensajesFiltrados = await mensajeSchema.find({canal: req.params.canal}).sort({fecha:-1}); // LOS DEVUELVE DESCENDENTE
+        const mensajesFiltrados = await mensajeSchema.find({canal: req.params.canal}).sort({fecha:-1}).limit(50); // LOS DEVUELVE DESCENDENTE
         res.send(mensajesFiltrados);
     } catch (error) {
         console.log(error);

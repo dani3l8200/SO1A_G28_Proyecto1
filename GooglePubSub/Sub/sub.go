@@ -37,7 +37,7 @@ func ImprimirMensaje(m *pubsub.Message, i int) {
 	} else {
 		// lo mando
 		datos := strings.NewReader(string(m.Data))
-		res, err := http.Post("http://34.94.243.121/mensajeria", "application/json; charset=UTF-8", datos)
+		res, err := http.Post("http://35.239.78.64/mensajeria", "application/json; charset=UTF-8", datos)
 		if err != nil {
 			log.Fatal(err)
 		}

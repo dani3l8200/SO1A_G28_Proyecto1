@@ -7,7 +7,7 @@ services:
       restart: always
       build: ./Pub
       ports: 
-      - "6000:6000"
+      - "80:6000"
       volumes: 
         - ./Pub:/go/src/google-pub-sub
       networks: 
