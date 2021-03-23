@@ -31,7 +31,7 @@ class Reader():
         # print('>>Read: Iniciando con la carga de datos')
         
         try:
-            with open('traffic.json', 'r') as data_file:
+            with open('traffic.json', 'r',encoding='utf8') as data_file:
                 global len_archive
                 self.infected_users = json.loads(data_file.read())
                 print('data leida correctamente', len(self.infected_users))
@@ -43,7 +43,7 @@ class MessageTraffic(FastHttpUser):
     # En este caso, esperara un tiempo de 0.1 segundos a 0.5 segundos (inclusivo) 
     #  entre cada llamada HTTP
     wait_time = between(0.1,0.9)
-    host = "https://" # en esta parte va el url
+    host = "http://34.96.121.87" # en esta parte va el url
     # Este metodo se ejecutara cada vez que empecemos una prueba
     # Este metodo se ejecutara POR USUARIO (o sea, si definimos 3 usuarios, se ejecutara 3 veces y tendremos 3 archivos)
     def on_start(self):
@@ -65,7 +65,7 @@ class MessageTraffic(FastHttpUser):
         if (random_data is not None):
             # utilizamos la funcion json.dumps para convertir un objeto JSON de python
             # a uno que podemos enviar por la web (básicamente lo convertimos a String)
-            data_to_send = json.dumps(random_data)
+            data_to_send = json.dumps(random_data,ensure_ascii=False)
             # Imprimimos los datos que enviaremos
             printDebug (data_to_send)
         
@@ -78,9 +78,3 @@ class MessageTraffic(FastHttpUser):
             # Parar ejecucion del usuario
             self.stop(True) # Se envía True como parámetro para el valor "force", este fuerza a locust a parar el proceso inmediatamente.
     
-    # Este es una de las tareas que se ejecutara cada vez que pase el tiempo wait_time
-    # Realiza un GET a la dirección del host que especificamos en la página de locust
-    @task
-    def GetMessages(self):      
-        # Realizar una peticion para recibir los datos que hemos guardado
-        self.client.get("/")  
