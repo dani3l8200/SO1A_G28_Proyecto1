@@ -71,18 +71,18 @@ export default class Reporte2 extends Component {
           regiones[5].cantidad += info[i].count;// nororiente
          }else if(info[i]._id === "Jutiapa" || info[i]._id === "Jalapa"|| info[i]._id === "Santa Rosa"){
           regiones[7].cantidad += info[i].count;// suroriente
-         }else if(info[i]._id === "peten"){
+         }else if(info[i]._id === "Petén"){
           regiones[1].cantidad += info[i].count;// peten
          }else if(info[i]._id === "Chimaltenago" || info[i]._id === "Sacatepequez"|| info[i]._id === "Escuintla"){
           regiones[2].cantidad += info[i].count;// central
          }
     }
 
-    regiones.sort(function (x , b ){
-      if(x.count > b.count){
+    regiones.sort(function (x , b){
+      if(x.cantidad > b.cantidad){
           return 1;
       }
-      if(x.count < b.count){
+      if(x.cantidad < b.cantidad){
         return -1;
       }
       return 0;
