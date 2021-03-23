@@ -14,14 +14,30 @@ export default class TableRep1 extends Component {
   state = {
     procesos: []
   };
-  async componentDidMount() {
+  
+  componentDidMount() {
     // constructor
     this.allMsg();
+    this.hilo = setInterval(() =>{this.allMsg();},1000);
   }
+
+  componentWillUnmount() {
+    clearInterval(this.hilo);
+  }
+
   async allMsg(){
     const ruta = url+"/prueba2/";
     const res = await axios.get(ruta);
-    console.log(res);
+    console.log("respuesta proceso",res);
+    res.data.sort(function (x , b){
+      if(x.pid > b.pid){
+          return 1;
+      }
+      if(x.pid < b.pid){
+        return -1;
+      }
+      return 0;
+    });
     this.setState({ procesos: res.data});
 }
 
