@@ -89,4 +89,13 @@ consulta.ultimos5casos= async(req,res) =>{
 }
 
 
+consulta.rangoEdades= async(req,res) =>{
+    try{
+        const all_ = await mensajeSchema.aggregate([{ "$group": {_id: "$age", count: {$sum:1}}} , {$sort: {"count": -1}}]);
+        res.send(all_)
+    }catch(error){
+        console.log("error getPorInfectedType");
+    }
+}
+
 module.exports =  consulta;

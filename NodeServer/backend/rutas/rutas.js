@@ -1,7 +1,7 @@
 const { Router } = require('express'); 
 const router = Router(); 
 const {saveMsg , test} = require('../controllers/mensajeria');
-const {get_All_msg , get_for_channel , getTop5DerpartamentosInfectados,regionMasInfectada,getForState ,getForInfectedType,ultimos5casos} = require('../controllers/consultas');
+const {get_All_msg , get_for_channel , getTop5DerpartamentosInfectados,regionMasInfectada,getForState ,getForInfectedType,ultimos5casos ,rangoEdades} = require('../controllers/consultas');
 
 // r es un bojeto Router
 router.route('/mensajeria/').post(saveMsg);
@@ -13,7 +13,7 @@ router.route('/consulta/getTop5DerpartamentosInfectados').get(getTop5Derpartamen
 router.route('/consulta/regionMasInfectada').get(regionMasInfectada);
 router.route('/consulta/getForState').get(getForState);
 router.route('/consulta/getForInfectedType').get(getForInfectedType);
-
+router.route('/consulta/rangoEdades').get(rangoEdades);
 module.exports = {
     router,
 };
