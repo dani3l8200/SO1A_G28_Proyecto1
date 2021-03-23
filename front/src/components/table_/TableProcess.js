@@ -12,17 +12,17 @@ import Paper from '@material-ui/core/Paper';
 
 export default class TableRep1 extends Component {
   state = {
-    mensajes: []
+    procesos: []
   };
   async componentDidMount() {
     // constructor
     this.allMsg();
   }
   async allMsg(){
-    const ruta = url+"/consulta/getAllMsg/";
+    const ruta = url+"/prueba2/";
     const res = await axios.get(ruta);
     console.log(res);
-    this.setState({ mensajes: res.data});
+    this.setState({ procesos: res.data});
 }
 
 
@@ -41,19 +41,19 @@ export default class TableRep1 extends Component {
             <TableRow>
             <TableCell>PID</TableCell>
             <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Father PID</TableCell>
             <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Father PID</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.mensajes.map((row) => (
+            {this.state.procesos.map((row) => (
             <TableRow>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.pid}
               </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
+              <TableCell align="right">{row.nombre}</TableCell>
+              <TableCell align="right">{row.state}</TableCell>
+              <TableCell align="right">{row.pidp}</TableCell>
             </TableRow>
           ))}
           </TableBody>
