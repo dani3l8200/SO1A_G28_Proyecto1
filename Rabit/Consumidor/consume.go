@@ -54,7 +54,7 @@ func main() {
 		for msg := range mensajes {
 			log.Printf("Recibiendo mensaje... %s", msg.Body)
 			cuerpoAEnviar := []byte(string(msg.Body))
-			req, err := http.Post("http://34.94.243.121/mensajeria/", "application/json", bytes.NewBuffer(cuerpoAEnviar))
+			req, err := http.Post("http://35.239.78.64/mensajeria/", "application/json", bytes.NewBuffer(cuerpoAEnviar))
 			if err != nil {
 				log.Fatalf("%s: %s", "Error, Post del mensaje. ", err)
 			}
