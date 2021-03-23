@@ -8,4 +8,4 @@ RUN go mod download
 
 EXPOSE 3500
 
-CMD ["go", "run", "send.go"]
+CMD ["go", "run", "publica.go"]

@@ -13,7 +13,7 @@ services:
     build: ./Publicador
     restart: on-failure
     ports: 
-      - "3500:3500"
+      - "80:3500"
     depends_on: 
       - rabbitmq
     networks: 
