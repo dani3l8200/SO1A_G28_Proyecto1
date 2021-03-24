@@ -59,6 +59,7 @@
     - [Makefile](#Makefile)
     - [Módulo RAM](#Módulo-RAM)
     - [Módulo Lista de Proceso](#Módulo-Lista-de-Proceso)
+    - [Compilación](#Compilación)
   - [Conclusiones](#conclusiones)
   - [Bibliografia](#bibliografia)
 
@@ -295,6 +296,23 @@ Para que funcionen sin problema estos comandos debemos estar logueados en nuestr
 
 ## Módulos Kernel
 
+### Módulo RAM
+
+Definiremos una variable para obtener el otoal de páginas en cahé
+
+    #define total_swapcache_pages()			0UL
+
+
+Esta llamada carga la función que se ejecutará en el init
+
+    module_init(event_init);
+
+Esta llamada carga la función que se ejecutará en el exit  
+
+    module_exit(event_exit);
+
+### Módulo Lista de Proceso
+
 ### Makefile
 
 Es necisario de un archivo de texto plano llamado Makefile, el cual servirá para la compilación del código escrito en el módulo
@@ -306,9 +324,12 @@ Es necisario de un archivo de texto plano llamado Makefile, el cual servirá par
     modulesclean:
         # Definir que se hará cuando se limpie el módulo
 	    make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) clean
-### Módulo RAM
 
-### Módulo Lista de Proceso
+### Compilación
+
+Se deberá ingresar el siguiente comando, en el directorio donde tendremos nuestro Makefile y el achivo a ser compilado, para poder realizar la compilación del módulo el cuál en su salida creará un archivo [nombre del módulo].ko que será nuestro módulo para el kernel.
+
+    make
 
 ## Conclusiones 
 1. Las ventajas de Docker hacen que la implementacion de software sea mucho mas eficiente que antes. Gracias a esto, los desarrolladores no tendran problemas para saber como se ejecutara su aplicacion fuera del entorno de prueba. Por otro lado, el administrador del sistema no tendra que luchar con los cambios o buscar las bibliotecas necesarias. 

@@ -11,7 +11,7 @@
 MODULE_LICENSE("GPL-2.0");
 MODULE_AUTHOR("Anthony Fernando Son Mux");
 MODULE_DESCRIPTION("Modulo el estado de la memória RAM");
-MODULE_VERSION("0.1");
+MODULE_VERSION("1.0");
 
 static int my_proc_show(struct seq_file *m, void *v)
 {
@@ -35,7 +35,7 @@ static int my_proc_show(struct seq_file *m, void *v)
         val->mem_unit = PAGE_SIZE;
     }
     */
-   	cached = global_node_page_state(NR_FILE_PAGES) + total_swapcache_pages() + info.bufferram;
+   	cached = global_node_page_state(NR_FILE_PAGES) - total_swapcache_pages() - info.bufferram;
 	if (cached < 0)
 		cached = 0;
    
