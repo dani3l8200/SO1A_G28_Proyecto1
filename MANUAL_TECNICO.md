@@ -55,6 +55,11 @@
     - [En la pagina registry container muestra la imagen](#en-la-pagina-registry-container-muestra-la-imagen)
     - [En google cloud run se da crear servicio y se realiza la siguiente configuracion.](#en-google-cloud-run-se-da-crear-servicio-y-se-realiza-la-siguiente-configuracion)
     - [En el puerto es de suma importancia que se ponga la del contenedor en este caso como es un servidor de NGINX, por default es el 80 por lo que se coloca este puerto.](#en-el-puerto-es-de-suma-importancia-que-se-ponga-la-del-contenedor-en-este-caso-como-es-un-servidor-de-nginx-por-default-es-el-80-por-lo-que-se-coloca-este-puerto)
+  - [Modulos Kernel](#Módulos-Kernel)
+    - [Makefile](#Makefile)
+    - [Módulo RAM](#Módulo-RAM)
+    - [Módulo Lista de Proceso](#Módulo-Lista-de-Proceso)
+    - [Compilación](#Compilación)
   - [Conclusiones](#conclusiones)
   - [Bibliografia](#bibliografia)
 
@@ -404,6 +409,179 @@ Para que funcionen sin problema estos comandos debemos estar logueados en nuestr
 ![alt](./img/Captura%20de%20pantalla%202021-03-23%20215737.png)
 
 ![alt](./img/Captura%20de%20pantalla%202021-03-23%20215758.png)
+
+## Módulos Kernel
+
+### Módulo RAM
+
+Definiremos una variable para obtener el otoal de páginas en cahé
+
+    #define total_swapcache_pages()			0UL
+
+Es lo que decide la salida.
+
+    static int my_proc_show(struct seq_file *m, void *v)
+    {
+        struct sysinfo info;
+        long cached;
+        si_meminfo(&info);
+        cached = global_node_page_state(NR_FILE_PAGES) - total_swapcache_pages() - info.bufferram;
+        if (cached < 0)
+            cached = 0;
+    
+        seq_printf(m,"{\n ");
+        seq_printf(m,"\t\"total\" : %ld,\n", info.totalram*info.mem_unit/1024);
+        seq_printf(m,"\t\"free\" : %ld,\n", info.freeram*info.mem_unit/1024);
+        seq_printf(m,"\t\"cache\" : %ld,\n", (cached*info.mem_unit)/1024  );
+        seq_printf(m,"\t\"used\" : %ld\n", ((info.totalram-info.freeram-cached)*info.mem_unit)/1024);
+        seq_printf(m,"}");
+        return 0;
+    }
+
+Para crear un pseudoarchivo en el sistema de archivos proc.
+
+    static ssize_t my_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *f_pos)
+    {
+        return 0;
+    }
+
+Es la devolución de llamada abierta, llamada cuando se abre el archivo proc.
+
+    static int my_proc_open(struct inode *inode, struct file *file)
+    {
+        return single_open(file, my_proc_show, NULL);
+    }
+
+Definición del evento principal
+
+    static int __init test_init(void)
+    {
+        struct proc_dir_entry *entry;
+        entry = proc_create("ram_module.json", 0777, NULL, &my_fops);
+        if (!entry)
+        {
+            return -1;
+        }
+        else
+        {
+            printk(KERN_INFO "@ram-module iniciado\n");
+        }
+        return 0;
+    }
+
+Definición del evento de Salida
+
+    static void __exit test_exit(void)
+    {
+        remove_proc_entry("ram_module.json", NULL);
+        printk(KERN_INFO "@ram-module finalizado\n");
+    }
+
+Esta llamada carga la función que se ejecutará en el init
+
+    module_init(event_init);
+
+Esta llamada carga la función que se ejecutará en el exit  
+
+    module_exit(event_exit);
+
+### Módulo Lista de Proceso
+Método recusivo que nos mostrará la cola de procesos.
+
+    void DFS(struct task_struct *task,struct seq_file *m)
+    {   
+        struct task_struct *child;
+        struct list_head *list;
+
+        seq_printf(m,"\t{\n");
+        seq_printf(m,"\t\t\"nombre\" : \"%s\",\n", task->comm);
+        seq_printf(m,"\t\t\"pid\" : %d,\n", task->pid);
+        seq_printf(m,"\t\t\"state\" : %li,\n", task->state);
+        seq_printf(m,"\t\t\"pidp\" : %d\n", task->parent->pid);
+        seq_printf(m,"\t}");
+        list_for_each(list, &task->children) {
+            seq_printf(m,",\n");
+            child = list_entry(list, struct task_struct, sibling);
+            DFS(child,m);
+        }
+    }
+
+Es lo que decide la salida.
+
+    static int my_proc_show(struct seq_file *m, void *v)
+    {
+        seq_printf(m,"[\n");
+        DFS(&init_task,m);
+        seq_printf(m,"\n]\n");
+        return 0;
+    }
+
+Para crear un pseudoarchivo en el sistema de archivos proc.
+
+    static ssize_t my_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *f_pos)
+    {
+        return 0;
+    }
+
+Es la devolución de llamada abierta, llamada cuando se abre el archivo proc.
+
+    static int my_proc_open(struct inode *inode, struct file *file)
+    {
+        return single_open(file, my_proc_show, NULL);
+    }
+
+Definición del evento principal
+
+    static int __init test_init(void)
+    {
+        struct proc_dir_entry *entry;
+        entry = proc_create("process_module.json", 0777, NULL, &my_fops);
+        if (!entry)
+        {
+            return -1;
+        }
+        else
+        {
+            printk(KERN_INFO "@process_module-module iniciado\n");
+        }
+        return 0;
+    }
+
+
+Definición del evento de Salida
+
+    static void __exit test_exit(void)
+    {
+        remove_proc_entry("process_module.json", NULL);
+        printk(KERN_INFO "@process_module finalizado\n");
+    }
+
+Esta llamada carga la función que se ejecutará en el init
+
+    module_init(event_init);
+
+Esta llamada carga la función que se ejecutará en el exit  
+
+    module_exit(event_exit);
+
+
+### Makefile
+
+Es necisario de un archivo de texto plano llamado Makefile, el cual servirá para la compilación del código escrito en el módulo
+
+    obj-m += [nombre del módulo].o
+    all:
+        # Definir que se hará cuando se compile
+        make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd)
+    modulesclean:
+        # Definir que se hará cuando se limpie el módulo
+	    make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) clean
+
+### Compilación
+
+Se deberá ingresar el siguiente comando, en el directorio donde tendremos nuestro Makefile y el achivo a ser compilado, para poder realizar la compilación del módulo el cuál en su salida creará un archivo [nombre del módulo].ko que será nuestro módulo para el kernel.
+
+    make
 
 ## Conclusiones 
 1. Las ventajas de Docker hacen que la implementacion de software sea mucho mas eficiente que antes. Gracias a esto, los desarrolladores no tendran problemas para saber como se ejecutara su aplicacion fuera del entorno de prueba. Por otro lado, el administrador del sistema no tendra que luchar con los cambios o buscar las bibliotecas necesarias. 

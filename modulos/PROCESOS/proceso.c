@@ -8,7 +8,7 @@
 MODULE_LICENSE("GPL-2.0");
 MODULE_AUTHOR("Anthony Fernando Son Mux");
 MODULE_DESCRIPTION("Modulo de procesos del sistema");
-MODULE_VERSION("0.1");
+MODULE_VERSION("1.0");
 
 /**
  * Performs a DFS on a given task's children.
