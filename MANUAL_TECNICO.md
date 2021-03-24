@@ -302,6 +302,31 @@ Definiremos una variable para obtener el otoal de páginas en cahé
 
     #define total_swapcache_pages()			0UL
 
+Definición del evento principal
+
+static int __init test_init(void)
+
+    {
+        struct proc_dir_entry *entry;
+        entry = proc_create("ram_module.json", 0777, NULL, &my_fops);
+        if (!entry)
+        {
+            return -1;
+        }
+        else
+        {
+            printk(KERN_INFO "@ram-module iniciado\n");
+        }
+        return 0;
+    }
+
+Definición del evento de Salida
+
+    static void __exit test_exit(void)
+    {
+        remove_proc_entry("ram_module.json", NULL);
+        printk(KERN_INFO "@ram-module finalizado\n");
+    }
 
 Esta llamada carga la función que se ejecutará en el init
 
@@ -312,6 +337,41 @@ Esta llamada carga la función que se ejecutará en el exit
     module_exit(event_exit);
 
 ### Módulo Lista de Proceso
+
+Definición del evento principal
+
+    static int __init test_init(void)
+    {
+        struct proc_dir_entry *entry;
+        entry = proc_create("process_module.json", 0777, NULL, &my_fops);
+        if (!entry)
+        {
+            return -1;
+        }
+        else
+        {
+            printk(KERN_INFO "@process_module-module iniciado\n");
+        }
+        return 0;
+    }
+
+
+Definición del evento de Salida
+
+    static void __exit test_exit(void)
+    {
+        remove_proc_entry("process_module.json", NULL);
+        printk(KERN_INFO "@process_module finalizado\n");
+    }
+
+Esta llamada carga la función que se ejecutará en el init
+
+    module_init(event_init);
+
+Esta llamada carga la función que se ejecutará en el exit  
+
+    module_exit(event_exit);
+
 
 ### Makefile
 
