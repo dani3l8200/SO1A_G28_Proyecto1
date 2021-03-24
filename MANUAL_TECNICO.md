@@ -55,6 +55,10 @@
     - [En la pagina registry container muestra la imagen](#en-la-pagina-registry-container-muestra-la-imagen)
     - [En google cloud run se da crear servicio y se realiza la siguiente configuracion.](#en-google-cloud-run-se-da-crear-servicio-y-se-realiza-la-siguiente-configuracion)
     - [En el puerto es de suma importancia que se ponga la del contenedor en este caso como es un servidor de NGINX, por default es el 80 por lo que se coloca este puerto.](#en-el-puerto-es-de-suma-importancia-que-se-ponga-la-del-contenedor-en-este-caso-como-es-un-servidor-de-nginx-por-default-es-el-80-por-lo-que-se-coloca-este-puerto)
+  - [Modulos Kernel](#Módulos-Kernel)
+    - [Makefile](#Makefile)
+    - [Módulo RAM](#Módulo-RAM)
+    - [Módulo Lista de Proceso](#Módulo-Lista-de-Proceso)
   - [Conclusiones](#conclusiones)
   - [Bibliografia](#bibliografia)
 
@@ -288,6 +292,23 @@ Para que funcionen sin problema estos comandos debemos estar logueados en nuestr
 ![alt](./img/Captura%20de%20pantalla%202021-03-23%20215737.png)
 
 ![alt](./img/Captura%20de%20pantalla%202021-03-23%20215758.png)
+
+## Módulos Kernel
+
+### Makefile
+
+Es necisario de un archivo de texto plano llamado Makefile, el cual servirá para la compilación del código escrito en el módulo
+
+    obj-m += [nombre del módulo].o
+    all:
+        # Definir que se hará cuando se compile
+        make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd)
+    modulesclean:
+        # Definir que se hará cuando se limpie el módulo
+	    make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) clean
+### Módulo RAM
+
+### Módulo Lista de Proceso
 
 ## Conclusiones 
 1. Las ventajas de Docker hacen que la implementacion de software sea mucho mas eficiente que antes. Gracias a esto, los desarrolladores no tendran problemas para saber como se ejecutara su aplicacion fuera del entorno de prueba. Por otro lado, el administrador del sistema no tendra que luchar con los cambios o buscar las bibliotecas necesarias. 
