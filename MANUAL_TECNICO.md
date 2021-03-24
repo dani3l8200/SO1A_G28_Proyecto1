@@ -201,6 +201,122 @@ d: detach mode
 up: levantar el compose 
 --build: compila las images en caso que no se hayan creado
 
+# RABBITMQ
+## Middleware de mensajería, AMQP.
+# 
+
+<div style="text-align: justify">
+Se procede a la creación de una máquina virtual haciendo uso de GCP, dicha máquina virtual aloja un conjunto de contenedores que son dirigidos por una herramienta llamada Docker-Compose. 
+
+El Docker-Compose tiene a su cargo tres contenedores clave, un contenedor aloja el *sender*, otro contenedor aloja el *receiver* y otro aloja el *servidor de rabbit*, todos ellos cumplen con una función definida. Se detalla la función de las partes.
+
+- Sender, es el encargado de publicar los mensajes en la cola de Rabbit.
+- Receiver, es el encargado de consumir los mensajes de la cola de Rabbit.
+- Servidor Rabbit, contiene la cola de mensajes, interactua con el Sender y Receiver.
+
+</div>
+
+<div align="center">
+    <p align="center">
+        Figura 1. Arquitectura utilizada con RabbitMQ.
+    </p>
+    <img src="./img/estructura.png" width="300">
+</div>
+<br>
+<div style="text-align: justify">
+Basicamente se divide en dos partes programables, la primera el Consumidor y el Publicador.
+</div>
+
+# 
+## PUBLICADOR
+<div style="text-align: justify">
+Se centra en estar recibiendo peticiones externas, debido a ello fue el único contenedor en el cual se expone su puerto. Se programó en GO, su nucleo está en en recibir peticiones haciendo uso de net/http y se mantiene esperando eun determinado puerto.
+<br>
+<br>
+
+<div align="center">
+    <p align="center">
+        Figura 2. Base de funcionamiento
+    </p>
+    <img src="./img/handleFunc.png" width="300">
+</div>
+
+<br>
+Luego de recibir un mensaje procedemos a realizar una conexión con el servidor de Rabbit para poder encolar el mensaje, antes de ello extraemos el cuerpo del mensaje y le hacemos un parseo a formato Json. Le agregamos un atributo del canal por el cual ha sido enviado y establecemos la conexión con el servidor de RabbitMq, ese contenedor se encuentra en un contenedor.
+
+<br>
+<br>
+
+<div align="center">
+    <p align="center">
+        Figura 3. Preparar mensaje y conexión a Rabbit
+    </p>
+    <img src="./img/tec_rab1.png" width="300">
+</div>
+<br>
+
+Procedemos a crear un canal por el cual viajará el mensaje, y con ello creamos una cola con sus atributos correspondientes del nombre, durabilidad, excluisividad, entre otros.
+<br>
+<br>
+
+<div align="center">
+    <p align="center">
+        Figura 4. Preparar mensaje y conexión a Rabbit
+    </p>
+    <img src="./img/tec_rab2.png" width="300">
+</div>
+<br>
+
+En caso de que todo suceda correctamente procedemos a publicar el mensaje haciendo uso del canal creado, agreagamos a qué cola se agregará y datos extras del mensaje.
+<br>
+<br>
+
+<div align="center">
+    <p align="center">
+        Figura 5. Preparar mensaje y conexión a Rabbit
+    </p>
+    <img src="./img/tec_rab3.png" width="300">
+</div>
+<br>
+
+</div>
+
+
+# 
+## CONSUMIDOR
+<div style="text-align: justify">
+Se procede a realizar la conexión con el servidor de Rabbit que se encuentra en un contenedor, luego de ello abrimos un canal para que el mensaje pueda ser transmitido, de igual forma declaramos una cola con los mismos atributos declarados en el publicador.
+
+<br>
+<br>
+
+<div align="center">
+    <p align="center">
+        Figura 5. Preparar entorno para consumir mensaje
+    </p>
+    <img src="./img/tec_rab4.png" width="300">
+</div>
+<br>
+
+Luego de ello se consume el mensaje que se encuentra dentro de la cola haciendo uso del canal, esto se realiza de forma indeterminada debido a que hace uso de una subrutina para ejecutarse, luego de recibir el mensaje de la cola procede a enviar ese mensaje a través de un método POST hacia un servidor de node para almacenarlo.
+<div align="center">
+    <p align="center">
+        Figura 5. Preparar entorno para consumir mensaje
+    </p>
+    <img src="./img/tec_rab5.png" width="300">
+</div>
+<br>
+
+</div>
+
+
+
+
+
+
+
+
+
     docker-compose up -d --build
 ## Configuracion Load Balancer 
 ### Primer paso crear las maquinas virtuales 
