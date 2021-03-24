@@ -41,7 +41,6 @@ además de utilizar tecnología de vanguardia para sobrellevar este sistema.
 
 ## Tecnologias a Utilizar
 * Locust
-* Kubernates
 * Docker
 * React
 * JavaScript
