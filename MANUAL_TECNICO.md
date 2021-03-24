@@ -285,6 +285,10 @@ Para que funcionen sin problema estos comandos debemos estar logueados en nuestr
 
 ![alt](./img/Captura%20de%20pantalla%202021-03-23%20213532.png)
 
+![alt](./img/Captura%20de%20pantalla%202021-03-23%20215737.png)
+
+![alt](./img/Captura%20de%20pantalla%202021-03-23%20215758.png)
+
 ## Conclusiones 
 1. Las ventajas de Docker hacen que la implementacion de software sea mucho mas eficiente que antes. Gracias a esto, los desarrolladores no tendran problemas para saber como se ejecutara su aplicacion fuera del entorno de prueba. Por otro lado, el administrador del sistema no tendra que luchar con los cambios o buscar las bibliotecas necesarias. 
 2. En general la virtualizacion esta es una excelente herramienta muy util para las empresas y para los usuarios que tienen que probar una aplicacion y practicar alguna configuracion en red sin necesidad de equipos fisicos.
