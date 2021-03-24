@@ -12,7 +12,8 @@ import Paper from '@material-ui/core/Paper';
 
 export default class TableRep1 extends Component {
   state = {
-    procesos: []
+    procesos: [],
+    numeroProcesos: 0
   };
   
   componentDidMount() {
@@ -38,6 +39,7 @@ export default class TableRep1 extends Component {
       }
       return 0;
     });
+    this.setState({ numeroProcesos: res.data.length});
     this.setState({ procesos: res.data});
 }
 
@@ -50,7 +52,7 @@ export default class TableRep1 extends Component {
       <div style={{height:100}}>
 
       </div>
-      <h1> PROCESOS </h1>
+      <h1> PROCESOS CORRIENDO  {this.state.numeroProcesos}</h1>
 <TableContainer component={Paper} className="col-xl-10 col-10 my-3" style={{maxHeight:481}}>
         <Table style={{minWidth: 650}} aria-label="caption table" >
           <TableHead>
