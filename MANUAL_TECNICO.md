@@ -302,10 +302,43 @@ Definiremos una variable para obtener el otoal de páginas en cahé
 
     #define total_swapcache_pages()			0UL
 
+Es lo que decide la salida.
+
+    static int my_proc_show(struct seq_file *m, void *v)
+    {
+        struct sysinfo info;
+        long cached;
+        si_meminfo(&info);
+        cached = global_node_page_state(NR_FILE_PAGES) - total_swapcache_pages() - info.bufferram;
+        if (cached < 0)
+            cached = 0;
+    
+        seq_printf(m,"{\n ");
+        seq_printf(m,"\t\"total\" : %ld,\n", info.totalram*info.mem_unit/1024);
+        seq_printf(m,"\t\"free\" : %ld,\n", info.freeram*info.mem_unit/1024);
+        seq_printf(m,"\t\"cache\" : %ld,\n", (cached*info.mem_unit)/1024  );
+        seq_printf(m,"\t\"used\" : %ld\n", ((info.totalram-info.freeram-cached)*info.mem_unit)/1024);
+        seq_printf(m,"}");
+        return 0;
+    }
+
+Para crear un pseudoarchivo en el sistema de archivos proc.
+
+    static ssize_t my_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *f_pos)
+    {
+        return 0;
+    }
+
+Es la devolución de llamada abierta, llamada cuando se abre el archivo proc.
+
+    static int my_proc_open(struct inode *inode, struct file *file)
+    {
+        return single_open(file, my_proc_show, NULL);
+    }
+
 Definición del evento principal
 
-static int __init test_init(void)
-
+    static int __init test_init(void)
     {
         struct proc_dir_entry *entry;
         entry = proc_create("ram_module.json", 0777, NULL, &my_fops);
@@ -337,6 +370,49 @@ Esta llamada carga la función que se ejecutará en el exit
     module_exit(event_exit);
 
 ### Módulo Lista de Proceso
+Método recusivo que nos mostrará la cola de procesos.
+
+    void DFS(struct task_struct *task,struct seq_file *m)
+    {   
+        struct task_struct *child;
+        struct list_head *list;
+
+        seq_printf(m,"\t{\n");
+        seq_printf(m,"\t\t\"nombre\" : \"%s\",\n", task->comm);
+        seq_printf(m,"\t\t\"pid\" : %d,\n", task->pid);
+        seq_printf(m,"\t\t\"state\" : %li,\n", task->state);
+        seq_printf(m,"\t\t\"pidp\" : %d\n", task->parent->pid);
+        seq_printf(m,"\t}");
+        list_for_each(list, &task->children) {
+            seq_printf(m,",\n");
+            child = list_entry(list, struct task_struct, sibling);
+            DFS(child,m);
+        }
+    }
+
+Es lo que decide la salida.
+
+    static int my_proc_show(struct seq_file *m, void *v)
+    {
+        seq_printf(m,"[\n");
+        DFS(&init_task,m);
+        seq_printf(m,"\n]\n");
+        return 0;
+    }
+
+Para crear un pseudoarchivo en el sistema de archivos proc.
+
+    static ssize_t my_proc_write(struct file *file, const char __user *buffer, size_t count, loff_t *f_pos)
+    {
+        return 0;
+    }
+
+Es la devolución de llamada abierta, llamada cuando se abre el archivo proc.
+
+    static int my_proc_open(struct inode *inode, struct file *file)
+    {
+        return single_open(file, my_proc_show, NULL);
+    }
 
 Definición del evento principal
 
