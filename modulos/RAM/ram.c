@@ -59,12 +59,13 @@ static int my_proc_open(struct inode *inode, struct file *file)
     return single_open(file, my_proc_show, NULL);
 }
 
-static struct proc_ops my_fops={
-    .proc_open = my_proc_open,
-    .proc_release = single_release,
-    .proc_read = seq_read,
-    .proc_lseek = seq_lseek,
-    .proc_write = my_proc_write
+static struct file_operations my_fops = {
+    .owner = THIS_MODULE,
+    .open = my_proc_open,
+    .release = single_release,
+    .read = seq_read,
+    .llseek = seq_lseek,
+    .write = my_proc_write
 };
 
 static int __init test_init(void)
