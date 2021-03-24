@@ -48,17 +48,40 @@ Si se desea tener información de último momento se cuenta con el apartado que 
 
 Este Reporte o seccion muestra a las personas infectadas separadas por rango de edad , el eje Y es la cantidad de infectados y el eje X vendria a ser el rango de edades.
 
-![](imgUsuario/rep5.png)
+<div align="center">
+    <p align="center">
+        Figura 5. Infecciones por Rango de edades.
+    </p>
+    <img src="./imgUsuario/rep5.png" width="300">
+</div>
+<br>
+
 
 
 
 En esta seccion se puede monitoriar la ram , en su porcentaje de uso siendo este el eje Y y el eje X el tiempo transcurrido que comienza a partir de que se posiciono en esta vista y a la par se muestra un grafico circular que indica el uso de ram y el espacio libre que tiene.
 
-![](imgUsuario/rep6.png)
+
+<div align="center">
+    <p align="center">
+        Figura 6. Monitor de Ram.
+    </p>
+  <img src="./imgUsuario/rep6.png" width="300">
+</div>
+<br>
+
 
 
 Los procesos se muestran en esta tabla ordenados por PID y se renderizan aunque no es tan notable por ser react pero por eso hay un numero que indica cuantos procesos se estan corriendo a la vez.
 
-![](imgUsuario/rep7.png)
+
+<div align="center">
+    <p align="center">
+        Figura 7. Procesos.
+    </p>
+    <img src="./imgUsuario/rep7.png" width="300">
+</div>
+<br>
+
 
 </div>
