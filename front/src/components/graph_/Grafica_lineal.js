@@ -14,7 +14,7 @@ class SplineAreaChart extends Component {
 		this.updateChart = this.updateChart.bind(this);
 	}
 	componentDidMount() {
-		this.hilo = setInterval(this.updateChart, 1500);
+		this.hilo = setInterval(this.updateChart, 700);
 	}
 	componentWillUnmount() {
 		clearInterval(this.hilo);
@@ -26,10 +26,13 @@ class SplineAreaChart extends Component {
 		let porcentaje =  (res.used/res.total)*100;
 		var d = new Date();
 		let horaActual = d.getHours() +":"+ d.getMinutes() +":"+ d.getSeconds();
-		puntosGrafica.push({label: horaActual,y: porcentaje});
-		if (puntosGrafica.length >  10 ) {
+		//puntosGrafica.push({label: horaActual,y: porcentaje});
+	/*	if (puntosGrafica.length >  10 ) {
 			puntosGrafica.shift();
-		}
+
+		}*/
+		puntosGrafica.push({label: horaActual,y: porcentaje});
+		console.log("RENDERIZANDO RAM: " , puntosGrafica.length);
 		this.chart.render();
 	}
 	render() {
